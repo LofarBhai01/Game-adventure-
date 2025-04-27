@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiplication Table (Interactive)</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f8ff;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            color: #ff6347;
+            font-size: 36px;
+        }
+        select {
+            padding: 15px;
+            font-size: 18px;
+            margin-top: 20px;
+            border: 2px solid #ff6347;
+            border-radius: 5px;
+            background-color: #ffe4b5;
+        }
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            margin-top: 20px;
+            background-color: #ff6347;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #ff4500;
+        }
+        table {
+            width: 80%;
+            margin-top: 20px;
+            border-collapse: collapse;
+            margin: 20px auto;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 15px;
+            border: 1px solid #ddd;
+            text-align: center;
+            font-size: 18px;
+        }
+        th {
+            background-color: #ff6347;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:nth-child(odd) {
+            background-color: #ffebcd;
+        }
+        .back-button {
+            margin-top: 30px;
+            padding: 10px 20px;
+            background-color: #32cd32;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .back-button:hover {
+            background-color: #228b22;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Choose a Number to See Its Multiplication Table</h1>
+
+    <!-- Dropdown to select a number -->
+    <select id="numberSelect">
+        <!-- Numbers from 2 to 20 -->
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+        <option value="11">11</option>
+        <option value="12">12</option>
+        <option value="13">13</option>
+        <option value="14">14</option>
+        <option value="15">15</option>
+        <option value="16">16</option>
+        <option value="17">17</option>
+        <option value="18">18</option>
+        <option value="19">19</option>
+        <option value="20">20</option>
+    </select>
+
+    <!-- Button to generate the table and play the audio -->
+    <button onclick="generateTable()">Generate Table</button>
+
+    <div id="tableContainer"></div>
+
+    <!-- Button to go back to the index page -->
+    <button class="back-button" onclick="goBackToHome()">Back to Home</button>
+
+    <script>
+        // Function to generate the table based on selected number
+        function generateTable() {
+            const num = document.getElementById("numberSelect").value;
+            const tableContainer = document.getElementById("tableContainer");
+
+            // Clear previous table and audio
+            tableContainer.innerHTML = "";
+
+            // Create a table to display the multiplication
+            let tableHTML = `<table>
+                                <tr><th>Multiplication</th><th>Result</th></tr>`;
+
+            for (let i = 1; i <= 10; i++) {
+                tableHTML += `<tr><td>${num} × ${i}</td><td>${num * i}</td></tr>`;
+            }
+            tableHTML += "</table>";
+
+            // Append the table to the container
+            tableContainer.innerHTML = tableHTML;
+
+            // Read the table aloud
+            readTableAloud(num);
+        }
+
+        // Function to read the table aloud
+        function readTableAloud(number) {
+            let utterance = new SpeechSynthesisUtterance();
+            let speech = "";
+
+            for (let i = 1; i <= 10; i++) {
+                speech += `${number} multiplied by ${i} is ${number * i}. `;
+            }
+
+            // Set the speech text
+            utterance.text = speech;
+
+            // Speak the text
+            window.speechSynthesis.speak(utterance);
+        }
+
+        // Function to navigate back to the home page (index.html)
+        function goBackToHome() {
+            window.location.href = 'index.html';
+        }
+    </script>
+
+</body>
+</html>
