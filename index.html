@@ -1,45 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Home - Game Adventure</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #f0f8ff;
-            margin-top: 100px;
-        }
-        h1 {
-            color: #333;
-        }
-        .button {
-            padding: 15px 30px;
-            font-size: 20px;
-            margin: 20px;
-            cursor: pointer;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            transition: background-color 0.3s;
-        }
-        .button:hover {
-            background-color: #45a049;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game Adventure - Home</title>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaina+2&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Baloo Bhaina 2', cursive;
+      background: linear-gradient(to right, #a1c4fd, #c2e9fb);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    h1 {
+      color: #ff5722;
+      font-size: 3rem;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 20px;
+      width: 90%;
+      max-width: 600px;
+    }
+    .card {
+      background: #fff;
+      padding: 20px;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      transition: transform 0.3s, background 0.3s;
+    }
+    .card:hover {
+      transform: scale(1.05);
+      background: #ffe082;
+    }
+    .card img {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      margin-bottom: 10px;
+    }
+    .card a {
+      text-decoration: none;
+      color: #333;
+      font-size: 1.2rem;
+      display: block;
+    }
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2rem;
+      }
+      .card img {
+        width: 60px;
+        height: 60px;
+      }
+    }
+  </style>
 </head>
 <body>
 
-    <h1>Welcome to Game Adventure</h1>
+  <h1>Game Adventure</h1>
 
-    <button class="button" onclick="location.href='alphabet.html'">Learn Alphabet</button><br>
-
-    <button class="button" onclick="location.href='number.html'">Learn Number</button><br>
-
-    <button class="button" onclick="location.href='color.html'">Learn Color</button><br>
-
-    <button class="button" onclick="location.href='table.html'">Learn Table</button><br>
+  <div class="grid">
+    <div class="card">
+      <a href="alphabet.html">
+        <img src="https://img.icons8.com/fluency/96/abc.png" alt="Alphabet">
+        Alphabet
+      </a>
+    </div>
+    <div class="card">
+      <a href="number.html">
+        <img src="https://img.icons8.com/fluency/96/123.png" alt="Numbers">
+        Numbers
+      </a>
+    </div>
+    <div class="card">
+      <a href="color.html">
+        <img src="https://img.icons8.com/fluency/96/rgb-color-wheel.png" alt="Colors">
+        Colors
+      </a>
+    </div>
+    <div class="card">
+      <a href="table.html">
+        <img src="https://img.icons8.com/fluency/96/table.png" alt="Tables">
+        Tables
+      </a>
+    </div>
+  </div>
 
 </body>
 </html>
