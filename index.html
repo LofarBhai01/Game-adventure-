@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="hi">
 <head>
@@ -6,190 +7,159 @@
     <title>Smart Kids: Learn with Fun</title>
     <style>
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f9f9f9;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
+            background: #f4f4f9;
+            color: #333;
         }
 
-        /* Header Section */
-        .header {
-            width: 100%;
-            background-color: #FF5733;
-            color: white;
-            padding: 15px 10px;
+        /* Navbar */
+        .navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
-        .header .logo {
-            font-size: 24px;
-            font-weight: bold;
-        }
-
-        .header .auth-links {
-            font-size: 16px;
-        }
-
-        .header .auth-links a {
+        .navbar a {
             color: white;
-            margin-left: 15px;
             text-decoration: none;
+            font-size: 18px;
+            margin-right: 20px;
+            transition: transform 0.2s ease-in-out;
         }
 
-        .header .auth-links a:hover {
+        .navbar a:hover {
+            transform: translateY(-2px);
             text-decoration: underline;
         }
 
-        /* Menu Section */
-        .menu {
-            text-align: center;
-            background-color: #fff;
-            border-radius: 15px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            width: 90%;
-            max-width: 800px;
+        /* Main container */
+        .main-container {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px;
+        }
+
+        .left-side {
+            width: 20%;
+            background: #ffcc00;
+            border-radius: 10px;
             padding: 20px;
-            margin-top: 30px;
         }
 
-        h1 {
-            color: #ff6347;
-            font-size: 40px;
-            margin-bottom: 20px;
-        }
-
-        .menu a {
+        .left-side a {
             display: block;
-            background-color: #4CAF50;
-            color: white;
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 18px;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .left-side a:hover {
+            transform: scale(1.1);
+        }
+
+        .right-side {
+            width: 30%;
+            background: #009688;
             padding: 20px;
             border-radius: 10px;
-            text-decoration: none;
-            font-size: 18px;
-            margin-bottom: 10px;
-            transition: background-color 0.3s ease;
-        }
-
-        .menu a:hover {
-            background-color: #45a049;
-        }
-
-        .menu a:nth-child(odd) {
-            background-color: #ff9800;
-        }
-
-        .menu a:nth-child(odd):hover {
-            background-color: #f57c00;
-        }
-
-        .menu a:nth-child(even) {
-            background-color: #2196F3;
-        }
-
-        .menu a:nth-child(even):hover {
-            background-color: #1976D2;
-        }
-
-        /* Ads Section */
-        .ads {
-            background-color: #fafafa;
-            padding: 20px;
+            color: white;
             text-align: center;
-            font-size: 18px;
-            color: #333;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .right-side button {
+            padding: 10px 20px;
+            background: #f44336;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
             margin-top: 20px;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .right-side button:hover {
+            transform: translateY(-2px);
+        }
+
+        .content {
+            width: 50%;
+            padding: 20px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        .footer {
+            background: #3e3e3e;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
             width: 100%;
         }
 
-        /* Three Dots Menu (Hamburger) */
-        .three-dots-menu {
-            display: none;
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            font-size: 24px;
-            cursor: pointer;
-        }
-
-        .three-dots-menu div {
-            background-color: #333;
-            height: 4px;
-            width: 30px;
-            margin: 6px 0;
-            border-radius: 5px;
-        }
-
-        /* Responsive Design */
-        @media screen and (max-width: 768px) {
-            .menu {
-                width: 100%;
-                padding: 10px;
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column;
+                align-items: center;
             }
 
-            .menu a {
-                font-size: 16px;
-            }
-
-            .header .logo {
-                font-size: 20px;
-            }
-
-            .header .auth-links {
-                font-size: 14px;
-            }
-
-            .three-dots-menu {
-                display: block;
+            .left-side, .right-side, .content {
+                width: 90%;
+                margin-bottom: 20px;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- Header Section -->
-    <div class="header">
-        <div class="logo">Smart Kids</div>
-        <div class="auth-links">
-            <a href="signup.html">Sign Up</a>
-            <a href="login.html">Login</a>
+    <!-- Navbar -->
+    <div class="navbar">
+        <a href="#">Smart Kids</a>
+        <div>
+            <a href="#">Sign In</a>
+            <a href="#">Login</a>
         </div>
     </div>
 
-    <!-- Three Dots Menu (Hamburger) -->
-    <div class="three-dots-menu">
-        <div></div>
-        <div></div>
-        <div></div>
-    </div>
+    <!-- Main Content -->
+    <div class="main-container">
+        <!-- Left Side Menu -->
+        <div class="left-side">
+            <a href="alphabet.html">अ/आ(स्वर)</a>
+            <a href="number.html">संख्या</a>
+            <a href="color.html">रंग</a>
+            <a href="table.html">गुणन तालिका</a>
+        </div>
 
-    <!-- Main Menu Section -->
-    <div class="menu">
-        <h1>Smart Kids: Learn with Fun</h1>
-        <div class="menu-items">
-            <!-- Links with Hindi and English -->
-            <a href="alphabet.html">alphabets</a>
-            <a href="number.html">Numbers</a>
-            <a href="color.html">Colors</a>
-            <a href="table.html">Multiplication Table</a>
-            <a href="अ-आ.html">swar</a>
-            <a href="क-ज्ञ.html">vyanjan</a>
+        <!-- Main Content Section -->
+        <div class="content">
+            <h2>Welcome to Smart Kids!</h2>
+            <p>Learn with fun through our colorful educational games.</p>
+        </div>
+
+        <!-- Right Side Sign In/Sign Up -->
+        <div class="right-side">
+            <h3>Welcome to the Learning App!</h3>
+            <button>Sign Up</button>
         </div>
     </div>
 
-    <!-- Ads Section -->
-    <div class="ads">
-        <p>यहां पर Ads दिखाई जाएंगी।</p>
+    <!-- Footer for Ads -->
+    <div class="footer">
+        <p>Ad Space Reserved</p>
     </div>
-
-    <footer>
-        &copy; 2025 Smart Kids: Learn with Fun | सभी अधिकार सुरक्षित
-    </footer>
 
 </body>
 </html>
