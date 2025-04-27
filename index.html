@@ -1,140 +1,40 @@
-दं<!DOCTYPE html>
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Adventure</title> <!-- Updated title -->
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet">
-    
+    <title>Home - Game Adventure</title>
     <style>
-        /* General Styles */
         body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Roboto', sans-serif;
-            background: linear-gradient(to right, #ff7e5f, #feb47b);
-            color: #fff;
+            font-family: Arial, sans-serif;
             text-align: center;
+            background-color: #f0f8ff;
+            margin-top: 100px;
         }
-
-        .header {
-            padding: 50px;
-            background: rgba(0, 0, 0, 0.5);
-            margin-bottom: 30px;
-            border-radius: 10px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        h1 {
+            color: #333;
         }
-
-        .header h1 {
-            font-family: 'Roboto Slab', serif;
-            font-size: 3em;
-            margin: 0;
-            color: #fff;
-            text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
-        }
-
-        .header p {
-            font-size: 1.2em;
-            color: #fff;
-        }
-
-        .container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            padding: 20px;
-        }
-
-        .button-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
-        }
-
-        .container button {
-            font-size: 20px;
+        .button {
             padding: 15px 30px;
-            margin: 15px;
-            border: none;
-            border-radius: 50px;
-            background-color: #fff;
-            color: #ff7e5f;
+            font-size: 20px;
+            margin: 20px;
             cursor: pointer;
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease;
-        }
-
-        .container button:hover {
-            transform: translateY(-5px);
-            background-color: #ff7e5f;
+            background-color: #4CAF50;
             color: white;
+            border: none;
+            border-radius: 10px;
+            transition: background-color 0.3s;
         }
-
-        /* Animation for buttons */
-        .container button {
-            animation: bounce 1.5s infinite;
-        }
-
-        @keyframes bounce {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-15px);
-            }
-        }
-
-        /* Mobile responsiveness */
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 2em;
-            }
-
-            .container button {
-                width: 200px;
-                font-size: 18px;
-            }
+        .button:hover {
+            background-color: #45a049;
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>Welcome to Game Adventure</h1> <!-- Updated heading -->
-        <p>Engage in fun learning activities with colorful and interactive lessons!</p>
-    </div>
-    
-    <div class="container">
-        <div class="button-container">
-            <button onclick="playAlphabet()">Alphabet Quiz Game</button>
-            <button onclick="playNumbers()">Learn Numbers</button>
-            <button onclick="playColors()">Learn Colors</button>
-            <button onclick="playMath()">Learn Math Tables</button>
-        </div>
-    </div>
 
-    <script>
-        function playAlphabet() {
-            alert("Let's start learning the Alphabets!");
-            // You can add more functionality here like sounds and images
-        }
+    <h1>Welcome to Game Adventure</h1>
 
-        function playNumbers() {
-            alert("Let's start learning Numbers!");
-            // You can add more functionality here like sounds and images
-        }
+    <button class="button" onclick="location.href='alphabet.html'">Learn Alphabet</button>
 
-        function playColors() {
-            alert("Let's start learning Colors!");
-            // You can add more functionality here like sounds and images
-        }
-
-        function playMath() {
-            alert("Let's start learning Math Tables!");
-            // You can add more functionality here like sounds and images
-        }
-    </script>
 </body>
 </html>
