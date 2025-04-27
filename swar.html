@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>स्वर अभ्यास</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            text-align: center;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 800px;
+            margin-top: 50px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #FF6347;
+            font-size: 36px;
+        }
+
+        .audio-controls {
+            margin-top: 20px;
+        }
+
+        .button {
+            padding: 15px 30px;
+            font-size: 18px;
+            margin: 10px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .button:hover {
+            opacity: 0.8;
+        }
+
+        .stop {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .home {
+            background-color: #2196F3;
+            color: white;
+        }
+
+        footer {
+            margin-top: 30px;
+            font-size: 14px;
+            color: #888;
+        }
+
+        .swara-list {
+            font-size: 24px;
+            margin-top: 20px;
+        }
+
+        .swara-list span {
+            display: inline-block;
+            margin: 10px;
+            font-weight: bold;
+            font-size: 30px;
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>स्वर अभ्यास</h1>
+        
+        <p>यहां पर आप सभी स्वर की आवाजें सुन सकते हैं और याद कर सकते हैं।</p>
+
+        <div class="swara-list">
+            <span onclick="speakSwara('अ')">अ</span>
+            <span onclick="speakSwara('आ')">आ</span>
+            <span onclick="speakSwara('इ')">इ</span>
+            <span onclick="speakSwara('ई')">ई</span>
+            <span onclick="speakSwara('उ')">उ</span>
+            <span onclick="speakSwara('ऊ')">ऊ</span>
+            <span onclick="speakSwara('ऋ')">ऋ</span>
+            <span onclick="speakSwara('ए')">ए</span>
+            <span onclick="speakSwara('ऐ')">ऐ</span>
+            <span onclick="speakSwara('ओ')">ओ</span>
+            <span onclick="speakSwara('औ')">औ</span>
+            <span onclick="speakSwara('अं')">अं</span>
+            <span onclick="speakSwara('अ:')">अ:</span>
+        </div>
+
+        <div class="audio-controls">
+            <button class="button stop" id="stopButton" onclick="stopPlayback()">Stop</button>
+            <!-- Updated Home Button to always redirect to index.html -->
+            <button class="button home" onclick="window.location.href='index.html'">Home</button>
+        </div>
+
+    </div>
+
+    <footer>
+        &copy; 2025 Smart Kids: Learn with Fun | सभी अधिकार सुरक्षित
+    </footer>
+
+    <script>
+        let utterance;
+        let isPlaying = false;
+        let intervalId;
+        let currentIndex = 0; // To track the current swara
+        let isPaused = false; // Track if playback is paused
+
+        // Create a speech synthesis instance
+        const synth = window.speechSynthesis;
+
+        // Define swaras to be played with custom pronunciations
+        const swaras = [
+            'अ', 'आ', 'इ', 'ई', 'उ', 'ऊ', 'ऋ', 'ए', 'ऐ', 'ओ', 'औ', 'अं', 'अ:'
+        ];
+
+        // Function to speak each swara with custom pronunciation
+        function speakSwara(swara) {
+            let pronunciation = swara;
+
+            // Custom pronunciation mapping
+            if (swara === 'इ') pronunciation = 'छोटी इ';
+            if (swara === 'ई') pronunciation = 'बड़ी ई';
+            if (swara === 'उ') pronunciation = 'छोटा उ';
+            if (swara === 'ऊ') pronunciation = 'बड़ा ऊ';
+            if (swara === 'अं') pronunciation = 'अग्ह';
+            if (swara === 'अ:') pronunciation = 'अह';
+
+            utterance = new SpeechSynthesisUtterance(pronunciation);
+            utterance.lang = "hi-IN"; // Set language to Hindi
+            utterance.rate = 1; // Normal speed
+            synth.speak(utterance);
+        }
+
+        // Function to start auto playback when the page loads
+        window.onload = function() {
+            startPlayback(); // Automatically start playback when the page loads
+        };
+
+        // Function to start auto playback
+        function startPlayback() {
+            if (isPlaying) return; // If already playing, don't start again
+
+            isPlaying = true;
+            currentIndex = 0; // Start from the first swara
+
+            // Set interval to play swaras every 2 seconds
+            intervalId = setInterval(function() {
+                if (currentIndex < swaras.length) {
+                    let swara = swaras[currentIndex];
+                    speakSwara(swara);
+                    currentIndex++;
+                } else {
+                    stopPlayback(); // Stop after all swaras are played
+                }
+            }, 2000); // 2 seconds interval
+        }
+
+        // Function to stop playback
+        function stopPlayback() {
+            if (intervalId) {
+                clearInterval(intervalId); // Stop interval
+            }
+            synth.cancel(); // Stop the speech immediately
+            isPlaying = false; // Mark as not playing
+        }
+
+        // Prevent clicking swaras while playback is active
+        document.querySelectorAll('.swara-list span').forEach(function(span) {
+            span.addEventListener('click', function(event) {
+                if (isPlaying) {
+                    event.preventDefault(); // Prevent action if auto playback is running
+                    alert("प्ले बैक चल रहा है। कृपया ऑटोमेटिक प्ले खत्म होने के बाद क्लिक करें।");
+                }
+            });
+        });
+
+    </script>
+
+</body>
+</html>
