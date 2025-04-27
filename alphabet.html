@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alphabet Quiz Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f8ff;
+        }
+        .question {
+            font-size: 24px;
+            margin: 20px;
+            padding: 20px;
+            background-color: #4CAF50;
+            color: white;
+        }
+        .option {
+            font-size: 20px;
+            padding: 15px;
+            margin: 10px;
+            background-color: #008CBA;
+            color: white;
+            cursor: pointer;
+            border-radius: 10px;
+        }
+        .message {
+            font-size: 20px;
+            color: #FF6347;
+            margin-top: 20px;
+        }
+        .buttons {
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            margin: 10px;
+            cursor: pointer;
+            border-radius: 10px;
+        }
+        .home-btn {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .nav-btn {
+            background-color: #008CBA;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Alphabet Quiz Game</h1>
+    
+    <div class="question" id="question">Question will appear here</div>
+
+    <div id="options-container">
+        <!-- Options will be displayed here -->
+    </div>
+
+    <div class="message" id="message"></div>
+
+    <div class="buttons">
+        <button class="nav-btn" id="backBtn" onclick="previousQuestion()">Back</button>
+        <button class="nav-btn" id="nextBtn" onclick="nextQuestion()">Next</button>
+        <button class="home-btn" onclick="goHome()">Home</button>
+    </div>
+
+    <script>
+        // A to Z words related to each alphabet
+        const alphabetWords = {
+            "A": ["Apple", "Ant", "Axe", "Airplane"],
+            "B": ["Ball", "Bat", "Balloon", "Boat"],
+            "C": ["Cat", "Car", "Cup", "Cake"],
+            "D": ["Dog", "Duck", "Door", "Donkey"],
+            "E": ["Elephant", "Egg", "Eagle", "Engine"],
+            "F": ["Fish", "Frog", "Fan", "Flag"],
+            "G": ["Goat", "Gun", "Grapes", "Globe"],
+            "H": ["Hat", "Hen", "House", "Horse"],
+            "I": ["Ice", "Igloo", "Ink", "Iron"],
+            "J": ["Jug", "Jam", "Jeep", "Joker"],
+            "K": ["Kite", "Key", "King", "Kangaroo"],
+            "L": ["Lion", "Lamp", "Leaf", "Lock"],
+            "M": ["Monkey", "Moon", "Mango", "Mouse"],
+            "N": ["Nest", "Net", "Nail", "Notebook"],
+            "O": ["Orange", "Owl", "Octopus", "Ox"],
+            "P": ["Parrot", "Pen", "Pencil", "Pumpkin"],
+            "Q": ["Queen", "Quill", "Quilt", "Quartz"],
+            "R": ["Rabbit", "Ring", "Rose", "Rocket"],
+            "S": ["Sun", "Ship", "Star", "Snake"],
+            "T": ["Tiger", "Tree", "Table", "Truck"],
+            "U": ["Umbrella", "Unicorn", "Urchin", "Uniform"],
+            "V": ["Violin", "Vase", "Van", "Vulture"],
+            "W": ["Watch", "Whale", "Wolf", "Window"],
+            "X": ["Xylophone", "X-ray", "Xmas", "Xerus"],
+            "Y": ["Yak", "Yacht", "Yolk", "Yard"],
+            "Z": ["Zebra", "Zip", "Zoo", "Zero"]
+        };
+
+        let currentAlphabet = "";
+        let correctAnswer = "";
+        let options = [];
+        let currentQuestionIndex = 0;
+        let questionOrder = Object.keys(alphabetWords); // ['A','B','C',...,'Z']
+
+        // Function to generate a question
+        function generateQuestion() {
+            currentAlphabet = questionOrder[currentQuestionIndex];
+
+            const correctAnswerWord = alphabetWords[currentAlphabet][0]; // correct word (first word)
+            const wrongOptions = getIncorrectAnswers(currentAlphabet);
+
+            // Prepare options - 1 correct + 3 incorrect
+            options = [correctAnswerWord, ...wrongOptions];
+            options = shuffle(options);
+
+            correctAnswer = correctAnswerWord;
+
+            document.getElementById("question").textContent = "Which of these is related to '" + currentAlphabet + "'?";
+
+            displayOptions();
+            document.getElementById("message").textContent = "";
+        }
+
+        function getIncorrectAnswers(correctAlphabet) {
+            let wrongAnswers = [];
+            let usedWords = new Set();
+            usedWords.add(alphabetWords[correctAlphabet][0]); // Don't repeat correct answer
+
+            while (wrongAnswers.length < 3) {
+                let randomAlphabet = questionOrder[Math.floor(Math.random() * questionOrder.length)];
+                if (randomAlphabet !== correctAlphabet) {
+                    let wordList = alphabetWords[randomAlphabet];
+                    let randomWord = wordList[Math.floor(Math.random() * wordList.length)];
+                    if (!usedWords.has(randomWord)) {
+                        wrongAnswers.push(randomWord);
+                        usedWords.add(randomWord);
+                    }
+                }
+            }
+            return wrongAnswers;
+        }
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function displayOptions() {
+            const optionsContainer = document.getElementById("options-container");
+            optionsContainer.innerHTML = "";
+
+            options.forEach(option => {
+                const optionButton = document.createElement("div");
+                optionButton.classList.add("option");
+                optionButton.textContent = option;
+                optionButton.onclick = () => checkAnswer(option);
+                optionsContainer.appendChild(optionButton);
+            });
+        }
+
+        function checkAnswer(selectedOption) {
+            const message = document.getElementById("message");
+
+            if (selectedOption === correctAnswer) {
+                message.textContent = "Correct! Well done!";
+                speakText("Correct answer. Well done!");
+            } else {
+                message.textContent = "Incorrect! Correct answer was: " + correctAnswer;
+                speakText("Wrong answer. Correct answer was " + correctAnswer);
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < questionOrder.length - 1) {
+                currentQuestionIndex++;
+                generateQuestion();
+            } else {
+                alert("This was the last question!");
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                generateQuestion();
+            } else {
+                alert("This is the first question!");
+            }
+        }
+
+        function goHome() {
+            window.location.href = "home.html"; // Change home page link
+        }
+
+        function speakText(text) {
+            const speech = new SpeechSynthesisUtterance(text);
+            speech.lang = 'en-US';
+            window.speechSynthesis.speak(speech);
+        }
+
+        // Start
+        generateQuestion();
+    </script>
+
+</body>
+</html>
