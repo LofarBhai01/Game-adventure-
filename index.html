@@ -14,10 +14,39 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            flex-direction: column;
         }
 
-        .container {
+        .header {
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .header .auth-links {
+            font-size: 16px;
+        }
+
+        .header .auth-links a {
+            color: white;
+            margin-left: 15px;
+            text-decoration: none;
+        }
+
+        .header .auth-links a:hover {
+            text-decoration: underline;
+        }
+
+        .menu {
             text-align: center;
             background-color: #fff;
             border-radius: 15px;
@@ -25,18 +54,13 @@
             width: 90%;
             max-width: 800px;
             padding: 20px;
+            margin-top: 30px;
         }
 
         h1 {
             color: #ff6347;
             font-size: 40px;
             margin-bottom: 20px;
-        }
-
-        .menu {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
         }
 
         .menu a {
@@ -47,7 +71,7 @@
             border-radius: 10px;
             text-decoration: none;
             font-size: 18px;
-            text-align: center;
+            margin-bottom: 10px;
             transition: background-color 0.3s ease;
         }
 
@@ -71,28 +95,101 @@
             background-color: #1976D2;
         }
 
+        .ads {
+            background-color: #fafafa;
+            padding: 20px;
+            text-align: center;
+            font-size: 18px;
+            color: #333;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .three-dots-menu {
+            display: none;
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .three-dots-menu div {
+            background-color: #333;
+            height: 4px;
+            width: 30px;
+            margin: 6px 0;
+            border-radius: 5px;
+        }
+
         footer {
             margin-top: 30px;
             color: #888;
             font-size: 14px;
         }
 
+        /* Responsive Design */
+        @media screen and (max-width: 768px) {
+            .menu {
+                width: 100%;
+                padding: 10px;
+            }
+
+            .menu a {
+                font-size: 16px;
+            }
+
+            .header .logo {
+                font-size: 20px;
+            }
+
+            .header .auth-links {
+                font-size: 14px;
+            }
+
+            .three-dots-menu {
+                display: block;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="container">
+    <!-- Header Section -->
+    <div class="header">
+        <div class="logo">Smart Kids</div>
+        <div class="auth-links">
+            <a href="signup.html">Sign Up</a>
+            <a href="login.html">Login</a>
+        </div>
+    </div>
+
+    <!-- Three Dots Menu (Hamburger) -->
+    <div class="three-dots-menu">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+
+    <!-- Main Menu Section -->
+    <div class="menu">
         <h1>Smart Kids: Learn with Fun</h1>
-        <div class="menu">
+        <div class="menu-items">
             <a href="alphabet.html">अ/आ (स्वर)</a>
-            <a href="number.html">संख्या</a>
-            <a href="color.html">रंग</a>
-            <a href="table.html">गुणा सारणी</a>
+            <a href="number.html">Numbers</a>
+            <a href="color.html">Colors</a>
+            <a href="table.html">Multiplication Table</a>
             <a href="अ-आ.html">अ/आ (स्वर)</a>
             <a href="क-ज्ञ.html">क/ज्ञ (व्यंजन)</a>
         </div>
-        <footer>
-            &copy; 2025 Smart Kids: Learn with Fun | सभी अधिकार सुरक्षित
-        </footer>
     </div>
+
+    <!-- Ads Section -->
+    <div class="ads">
+        <p>यहां पर Ads दिखाई जाएंगी।</p>
+    </div>
+
+    <footer>
+        &copy; 2025 Smart Kids: Learn with Fun | सभी अधिकार सुरक्षित
+    </footer>
 </body>
 </html>
