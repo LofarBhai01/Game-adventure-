@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learn Colors - Game Adventure</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f8ff;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            margin-top: 30px;
+            color: #333;
+        }
+        .question {
+            font-size: 50px;
+            margin-top: 20px;
+        }
+        .button {
+            padding: 12px 24px;
+            margin: 10px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+        .option-btn {
+            display: block;
+            width: 200px;
+            margin: 10px auto;
+            padding: 12px;
+            font-size: 18px;
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .option-btn:hover {
+            background-color: #0b7dda;
+        }
+        #timer {
+            font-size: 30px;
+            color: #f44336;
+            margin-top: 10px;
+        }
+        .result {
+            font-size: 30px;
+            margin-top: 20px;
+        }
+        .message {
+            font-size: 20px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Learn Colors</h1>
+    
+    <div id="game-container">
+        <h2>Identify the Color</h2>
+        <div id="colorDisplay" class="question"></div>
+        <div id="optionsContainer"></div>
+        <button class="button" onclick="nextQuestion()">Next Question</button><br><br>
+        <div id="timer"></div>
+    </div>
+
+    <div id="result-container" style="display:none;">
+        <h2>Result</h2>
+        <div id="score"></div>
+        <div id="grade"></div>
+        <div id="message"></div>
+    </div>
+
+    <script>
+        let timer;
+        let questionCount = 0;
+        let correctAnswers = 0;
+        let wrongAnswers = 0;
+
+        let colors = ["Red", "Blue", "Green", "Yellow", "Orange", "Purple", "Pink", "Brown", "Black", "White"];
+        let options = [];
+
+        function startTimer() {
+            let minutes = 3;
+            let seconds = 0;
+            timer = setInterval(function () {
+                if (seconds === 0) {
+                    if (minutes === 0) {
+                        clearInterval(timer);
+                        showResult();
+                    } else {
+                        minutes--;
+                        seconds = 59;
+                    }
+                } else {
+                    seconds--;
+                }
+                document.getElementById("timer").innerText = `Time left: ${minutes}:${seconds < 10 ? "0" + seconds : seconds}`;
+            }, 1000);
+        }
+
+        function nextQuestion() {
+            if (questionCount >= 60) {
+                clearInterval(timer);
+                showResult();
+                return;
+            }
+
+            questionCount++;
+
+            let correctColor = colors[Math.floor(Math.random() * colors.length)];
+            document.getElementById("colorDisplay").innerText = correctColor;
+            speakQuestion(correctColor); // Speak the question (color name)
+
+            options = [correctColor];
+            while (options.length < 4) {
+                let wrongColor = colors[Math.floor(Math.random() * colors.length)];
+                if (!options.includes(wrongColor)) {
+                    options.push(wrongColor);
+                }
+            }
+
+            options = shuffleArray(options);
+
+            let optionsHtml = '';
+            for (let option of options) {
+                optionsHtml += `<button class="option-btn" onclick="checkAnswer('${option}')">${option}</button>`;
+            }
+            document.getElementById("optionsContainer").innerHTML = optionsHtml;
+        }
+
+        function checkAnswer(selectedColor) {
+            let correctColor = document.getElementById("colorDisplay").innerText;
+            if (selectedColor === correctColor) {
+                correctAnswers++;
+            } else {
+                wrongAnswers++;
+            }
+            nextQuestion();
+        }
+
+        function speakQuestion(color) {
+            const speech = new SpeechSynthesisUtterance(`Which color is this? ${color}`);
+            speech.lang = 'en-IN';
+            window.speechSynthesis.speak(speech);
+        }
+
+        function shuffleArray(arr) {
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        function showResult() {
+            let percentage = (correctAnswers / 60) * 100;
+            document.getElementById("game-container").style.display = "none";
+            document.getElementById("result-container").style.display = "block";
+            document.getElementById("score").innerText = `Correct Answers: ${correctAnswers} | Wrong Answers: ${wrongAnswers}`;
+            
+            let grade = "";
+            let message = "";
+
+            if (percentage >= 60) {
+                grade = "Grade A";
+                message = "Excellent! You did a great job!";
+            } else if (percentage >= 45) {
+                grade = "Grade B";
+                message = "Good job! Keep practicing.";
+            } else if (percentage >= 33) {
+                grade = "Grade C";
+                message = "You need to improve. Keep trying!";
+            } else {
+                grade = "Fail";
+                message = "Don't worry! Keep practicing and you will get better!";
+            }
+
+            document.getElementById("grade").innerText = `Your Grade: ${grade}`;
+            document.getElementById("message").innerText = message;
+
+            let speech = new SpeechSynthesisUtterance(message);
+            window.speechSynthesis.speak(speech);
+        }
+
+        // Start the game and timer
+        startTimer();
+        nextQuestion();
+    </script>
+
+</body>
+</html>
