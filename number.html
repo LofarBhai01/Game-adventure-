@@ -1,269 +1,296 @@
-<!DOCTYPE html><html lang="hi">
+<!DOCTYPE html><html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Smart Kids - Number Game</title>
-<style>
-  body {
-    margin: 0;
-    font-family: 'Arial', sans-serif;
-    background: linear-gradient(to right, #ffecd2, #fcb69f);
-    overflow-x: hidden;
-  }
-  header, footer {
-    text-align: center;
-    padding: 10px;
-  }
-  .container {
-    padding: 20px;
-    text-align: center;
-  }
-  .question, .options, .controls, .timer, .ads-section, .upload-section {
-    margin-top: 20px;
-  }
-  .option {
-    display: inline-block;
-    margin: 10px;
-    padding: 10px 20px;
-    border-radius: 10px;
-    font-weight: bold;
-    font-size: 20px;
-    cursor: pointer;
-  }
-  .timer {
-    font-size: 24px;
-    color: red;
-    font-weight: bold;
-  }
-  .controls button {
-    padding: 10px 20px;
-    margin: 5px;
-    border: none;
-    border-radius: 10px;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-  }
-  .play, .back { background-color: green; color: white; }
-  .home, .stop { background-color: red; color: white; }
-  .ads-section, .upload-section {
-    background-color: #ffffffaa;
-    padding: 20px;
-    border-radius: 10px;
-  }
-  .ad-rules {
-    font-size: 16px;
-    margin-top: 10px;
-    color: #333;
-  }
-  #adDisplay {
-    margin-top: 10px;
-    height: 150px;
-    background: #eee;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 10px;
-    overflow: hidden;
-  }
-  #cartoon {
-    width: 100%;
-    height: 150px;
-    background-image: url('https://cdn.pixabay.com/photo/2020/05/16/10/44/kid-5179688_960_720.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Number Game</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      font-weight: bold;
+      background: linear-gradient(to right, #ffecd2, #fcb69f);
+      overflow-x: hidden;
+    }
+    .container {
+      padding: 10px;
+      text-align: center;
+    }
+    h1 {
+      color: #333;
+    }
+    .level-select, .quiz, .counting, .input-mode, .upload-ads {
+      display: none;
+    }
+    button {
+      margin: 5px;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+    }
+    .option {
+      display: block;
+      margin: 10px auto;
+      padding: 10px;
+      width: 80%;
+      font-size: 20px;
+      border-radius: 8px;
+    }
+    .option1 { background-color: #ff9999; }
+    .option2 { background-color: #99ccff; }
+    .option3 { background-color: #99ff99; }
+    .option4 { background-color: #ffff99; }
+    .timer { color: red; font-size: 24px; margin: 10px; }
+    .play, .back { background-color: green; color: white; }
+    .home, .stop { background-color: red; color: white; }
+    #animation {
+      margin-top: 20px;
+    }
+    .ad-section {
+      margin: 20px;
+      border: 2px dashed #333;
+      padding: 20px;
+      min-height: 150px;
+    }
+    video, img {
+      max-width: 100%;
+      height: auto;
+    }
+    .ad-info {
+      font-size: 14px;
+      color: #555;
+    }
+  </style>
 </head>
-<body><header>
-  <h1>Smart Kids: Number Learning Fun</h1>
-</header><div class="container">
-  <div class="timer" id="timer">Timer: 2:00</div>  <div class="question" id="question">यहाँ प्रश्न दिखाई देगा</div>  <div class="options" id="options">
-    <!-- Options dynamically inserted -->
-  </div>  <div class="controls">
-    <button class="back" onclick="prevQuestion()">Back</button>
-    <button class="play" onclick="nextQuestion()">Next</button>
-    <button class="home" onclick="goHome()">Home</button>
-  </div>  <div class="ads-section">
-    <h2>Ads / Cartoon Section</h2>
-    <div id="adDisplay">
-      <div id="cartoon"></div>
-    </div>
-  </div>  <div class="upload-section">
-    <h3>Upload Your Ad (Video/Image)</h3>
-    <input type="file" id="ads-file-upload" accept="image/*,video/*">
-    <button onclick="processAds()">Upload Ad</button><div class="ad-rules">
-  <p><strong>Ad Plans:</strong></p>
-  <ul>
-    <li>14 दिन के लिए ₹99</li>
-    <li>30 दिन के लिए ₹149</li>
-    <li>60 दिन के लिए ₹249</li>
-    <li>180 दिन के लिए ₹499</li>
-    <li>364 दिन के लिए ₹999</li>
-  </ul>
-  <p>Terms and Conditions Apply.</p>
+<body>
+  <div class="container">
+    <h1>Number Game</h1>
+    <div class="level-select">
+      <h2>Choose Level</h2>
+      <button onclick="startLevel(1)">Level 1 - Counting</button>
+      <button onclick="startLevel(2)">Level 2 - Quiz Mode</button>
+      <button onclick="startLevel(3)">Level 3 - Input Mode</button>
+      <br><br>
+      <button class="home" onclick="goHome()">Home</button>
+    </div><div class="counting">
+  <h2>Counting Numbers</h2>
+  <div id="countDisplay"></div>
+  <button class="play" onclick="playCounting()">Play</button>
+  <button class="stop" onclick="pauseCounting()">Pause</button>
+  <br><br>
+  <button class="back" onclick="showLevelSelect()">Back</button>
+  <button class="home" onclick="goHome()">Home</button>
 </div>
 
+<div class="quiz">
+  <h2>Quiz Time</h2>
+  <div id="question"></div>
+  <div class="timer" id="timer"></div>
+  <button class="option option1" id="opt1" onclick="checkAnswer(1)"></button>
+  <button class="option option2" id="opt2" onclick="checkAnswer(2)"></button>
+  <button class="option option3" id="opt3" onclick="checkAnswer(3)"></button>
+  <button class="option option4" id="opt4" onclick="checkAnswer(4)"></button>
+  <br>
+  <button class="back" onclick="showLevelSelect()">Back</button>
+  <button class="home" onclick="goHome()">Home</button>
+</div>
+
+<div class="input-mode">
+  <h2>Type the Number</h2>
+  <div id="speakNumber"></div>
+  <input type="number" id="userInput" placeholder="Enter number">
+  <button onclick="submitInput()">Submit</button>
+  <div id="inputResult"></div>
+  <div class="timer" id="inputTimer"></div>
+  <br>
+  <button class="back" onclick="showLevelSelect()">Back</button>
+  <button class="home" onclick="goHome()">Home</button>
+</div>
+
+<div class="upload-ads">
+  <h2>Upload Ads/Message</h2>
+  <input type="file" id="adUpload" accept="image/*,video/*">
+  <button onclick="uploadAd()">Upload</button>
+  <div class="ad-info" id="adInfo" style="display:none;">
+    <h3>Ad Pricing:</h3>
+    <ul>
+      <li>14 days - ₹99</li>
+      <li>30 days - ₹149</li>
+      <li>60 days - ₹249</li>
+      <li>180 days - ₹499</li>
+      <li>364 days - ₹999</li>
+    </ul>
+    <p><small>Terms and Conditions apply.</small></p>
   </div>
-</div><footer>
-  <p>&copy; 2025 Smart Kids</p>
-</footer><script>
-let questions = [];
-let currentQuestionIndex = 0;
-let level = 1;
-let scoreRight = 0, scoreWrong = 0;
-let questionTimer;
-let mainTimer;
+  <div class="ad-section" id="adSection">
+    <img src="https://cdn.pixabay.com/photo/2017/01/31/13/14/boy-2023989_960_720.png" alt="Animation">
+  </div>
+  <br>
+  <button class="back" onclick="showLevelSelect()">Back</button>
+  <button class="home" onclick="goHome()">Home</button>
+</div>
 
-function generateQuestions() {
-  questions = [];
-  for (let i = 1; i <= 100; i++) {
-    questions.push(i);
-  }
-}
+  </div>  <script>
+    let level = 0;
+    let countingInterval;
+    let current = 1;
+    let countingPaused = true;
 
-generateQuestions();
-
-function showQuestion() {
-  if (currentQuestionIndex >= questions.length) {
-    clearInterval(mainTimer);
-    clearInterval(questionTimer);
-    alert(`Level Complete!\nRight: ${scoreRight}\nWrong: ${scoreWrong}`);
-    return;
-  }
-
-  let num = questions[currentQuestionIndex];
-  document.getElementById('question').innerText = `Number: ${num}`;
-
-  let options = [];
-  options.push(num);
-  while (options.length < 4) {
-    let rand = Math.floor(Math.random() * 100) + 1;
-    if (!options.includes(rand)) options.push(rand);
-  }
-  options.sort(() => Math.random() - 0.5);
-
-  document.getElementById('options').innerHTML = '';
-  const colors = ['#FF5733', '#33FF57', '#3357FF', '#F333FF'];
-  options.forEach((opt, idx) => {
-    let btn = document.createElement('div');
-    btn.className = 'option';
-    btn.innerText = opt;
-    btn.style.backgroundColor = colors[idx];
-    btn.onclick = () => checkAnswer(opt, num);
-    document.getElementById('options').appendChild(btn);
-  });
-
-  clearInterval(questionTimer);
-  questionTimer = setTimeout(() => {
-    alert("अभी आपको और अभ्यास करने की ज़रूरत है!");
-    currentQuestionIndex++;
-    showQuestion();
-  }, 30000);
-
-  speak(num);
-}
-
-function checkAnswer(selected, correct) {
-  clearTimeout(questionTimer);
-  if (selected === correct) {
-    alert("Right Answer!");
-    scoreRight++;
-    currentQuestionIndex++;
-    showQuestion();
-  } else {
-    alert("Wrong Answer!");
-    scoreWrong++;
-  }
-}
-
-function startMainTimer() {
-  let totalTime = 120;
-  mainTimer = setInterval(() => {
-    let minutes = Math.floor(totalTime / 60);
-    let seconds = totalTime % 60;
-    document.getElementById('timer').innerText = `Timer: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-    totalTime--;
-    if (totalTime < 0) {
-      clearInterval(mainTimer);
-      clearInterval(questionTimer);
-      alert(`Time Over!\nRight: ${scoreRight}\nWrong: ${scoreWrong}`);
+    function goHome() {
+      window.location.href = 'index.html';
     }
-  }, 1000);
-}
 
-function nextQuestion() {
-  currentQuestionIndex++;
-  showQuestion();
-}
+    function showLevelSelect() {
+      document.querySelectorAll('.counting, .quiz, .input-mode, .upload-ads').forEach(div => div.style.display = 'none');
+      document.querySelector('.level-select').style.display = 'block';
+      clearInterval(countingInterval);
+    }
 
-function prevQuestion() {
-  if (currentQuestionIndex > 0) {
-    currentQuestionIndex--;
-    showQuestion();
-  }
-}
+    function startLevel(lvl) {
+      level = lvl;
+      document.querySelector('.level-select').style.display = 'none';
+      if (lvl === 1) {
+        document.querySelector('.counting').style.display = 'block';
+        playCounting();
+      } else if (lvl === 2) {
+        document.querySelector('.quiz').style.display = 'block';
+        startQuiz();
+      } else if (lvl === 3) {
+        document.querySelector('.input-mode').style.display = 'block';
+        startInputMode();
+      }
+    }
 
-function goHome() {
-  window.location.href = 'index.html';
-}
-
-function speak(text) {
-  let utter = new SpeechSynthesisUtterance(text);
-  utter.lang = 'hi-IN';
-  window.speechSynthesis.speak(utter);
-}
-
-function processAds() {
-  const fileInput = document.getElementById('ads-file-upload');
-  if (fileInput.files.length > 0) {
-    const file = fileInput.files[0];
-
-    if (file.type.startsWith('video/')) {
-      const video = document.createElement('video');
-      video.preload = 'metadata';
-      video.onloadedmetadata = function() {
-        window.URL.revokeObjectURL(video.src);
-        if (video.duration > 59) {
-          alert("Video must be under 59 seconds!");
-          fileInput.value = "";
-        } else {
-          displayAd(file);
+    function playCounting() {
+      countingPaused = false;
+      countingInterval = setInterval(() => {
+        if (!countingPaused) {
+          document.getElementById('countDisplay').innerText = current;
+          speak(current);
+          current++;
+          if (current > 100) clearInterval(countingInterval);
         }
-      };
-      video.src = URL.createObjectURL(file);
-    } else {
-      displayAd(file);
+      }, 4000);
     }
-  } else {
-    alert("Please upload an ad file!");
-  }
-}
 
-function displayAd(file) {
-  const adDisplay = document.getElementById('adDisplay');
-  adDisplay.innerHTML = '';
-  if (file.type.startsWith('image/')) {
-    const img = document.createElement('img');
-    img.src = URL.createObjectURL(file);
-    img.style.width = '100%';
-    img.style.height = '100%';
-    img.style.objectFit = 'cover';
-    adDisplay.appendChild(img);
-  } else if (file.type.startsWith('video/')) {
-    const video = document.createElement('video');
-    video.src = URL.createObjectURL(file);
-    video.controls = true;
-    video.style.width = '100%';
-    video.style.height = '100%';
-    adDisplay.appendChild(video);
-  }
-}
+    function pauseCounting() {
+      countingPaused = true;
+    }
 
-window.onload = function() {
-  startMainTimer();
-  showQuestion();
-};
-</script></body>
+    function speak(text) {
+      let utterance = new SpeechSynthesisUtterance(text);
+      window.speechSynthesis.speak(utterance);
+    }
+
+    // Quiz Mode
+    let quizTimer;
+    let correctAnswer;
+    let correctCount = 0;
+    let wrongCount = 0;
+
+    function startQuiz() {
+      generateQuestion();
+      startQuizTimer();
+    }
+
+    function generateQuestion() {
+      let a = Math.floor(Math.random() * 100) + 1;
+      correctAnswer = a;
+      document.getElementById('question').innerText = `What is the number?`;
+      let options = [a];
+      while (options.length < 4) {
+        let random = Math.floor(Math.random() * 100) + 1;
+        if (!options.includes(random)) options.push(random);
+      }
+      options.sort(() => Math.random() - 0.5);
+      options.forEach((opt, idx) => document.getElementById(`opt${idx+1}`).innerText = opt);
+    }
+
+    function checkAnswer(selected) {
+      let selectedValue = document.getElementById(`opt${selected}`).innerText;
+      if (selectedValue == correctAnswer) {
+        speak('Right Answer');
+        correctCount++;
+      } else {
+        speak('You need more practice');
+        wrongCount++;
+      }
+      generateQuestion();
+    }
+
+    function startQuizTimer() {
+      let timeLeft = 120;
+      quizTimer = setInterval(() => {
+        document.getElementById('timer').innerText = `${timeLeft}s`;
+        timeLeft--;
+        if (timeLeft < 0) {
+          clearInterval(quizTimer);
+          alert(`Time Over! Correct: ${correctCount}, Wrong: ${wrongCount}`);
+          showLevelSelect();
+        }
+      }, 1000);
+    }
+
+    // Input Mode
+    let inputTimerInterval;
+    function startInputMode() {
+      newSpeakNumber();
+      startInputTimer();
+    }
+
+    function newSpeakNumber() {
+      let number = Math.floor(Math.random() * 100) + 1;
+      document.getElementById('speakNumber').innerText = 'Listen and Type';
+      speak(number);
+      correctAnswer = number;
+    }
+
+    function submitInput() {
+      let userVal = document.getElementById('userInput').value;
+      if (parseInt(userVal) === correctAnswer) {
+        document.getElementById('inputResult').innerText = 'Good';
+      } else {
+        document.getElementById('inputResult').innerText = 'Wrong';
+      }
+      newSpeakNumber();
+      document.getElementById('userInput').value = '';
+    }
+
+    function startInputTimer() {
+      let timeLeft = 120;
+      inputTimerInterval = setInterval(() => {
+        document.getElementById('inputTimer').innerText = `${timeLeft}s`;
+        timeLeft--;
+        if (timeLeft < 0) {
+          clearInterval(inputTimerInterval);
+          alert(`Time Over!`);
+          showLevelSelect();
+        }
+      }, 1000);
+    }
+
+    // Upload Ad
+    function uploadAd() {
+      const file = document.getElementById('adUpload').files[0];
+      if (file) {
+        if (file.size > 60000000) {
+          alert('Video must be less than 59 seconds (~60MB).');
+          return;
+        }
+        let url = URL.createObjectURL(file);
+        let adSection = document.getElementById('adSection');
+        if (file.type.startsWith('video')) {
+          adSection.innerHTML = `<video controls src="${url}"></video>`;
+        } else {
+          adSection.innerHTML = `<img src="${url}">`;
+        }
+        document.getElementById('adInfo').style.display = 'block';
+      }
+    }
+
+    // Initialize
+    showLevelSelect();
+  </script></body>
 </html>
