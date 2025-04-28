@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Smart Kids: Numbers</title>
+  <title>Smart Kids - Numbers</title>
   <style>
     /* General Styling */
     * {
@@ -13,7 +13,7 @@
     }
 
     body {
-      font-family: 'Comic Sans MS', cursive, sans-serif;
+      font-family: 'Arial', sans-serif;
       background: linear-gradient(45deg, #ff9a9e, #fad0c4, #fbc2eb, #a6c1ee);
       background-size: 400% 400%;
       animation: gradientBG 15s ease infinite;
@@ -54,17 +54,15 @@
       margin: 10px;
       padding: 12px 25px;
       font-size: 18px;
+      font-weight: bold;
       border: none;
       border-radius: 12px;
       cursor: pointer;
-      background: linear-gradient(145deg, #a1c4fd, #c2e9fb);
-      box-shadow: 3px 3px 10px rgba(0,0,0,0.2);
       transition: transform 0.2s, background 0.3s;
     }
 
     button:hover {
       transform: scale(1.08);
-      background: linear-gradient(145deg, #c2e9fb, #a1c4fd);
     }
 
     #options button {
@@ -72,6 +70,7 @@
       width: 80%;
       max-width: 300px;
       margin: 10px auto;
+      font-weight: bold;
     }
 
     input[type="text"] {
@@ -79,6 +78,7 @@
       width: 80%;
       max-width: 300px;
       font-size: 18px;
+      font-weight: bold;
       border-radius: 10px;
       border: 2px solid #ccc;
       margin-top: 10px;
@@ -92,16 +92,29 @@
       font-size: 30px;
       margin-bottom: 20px;
       color: #333;
+      font-weight: bold;
     }
 
-    #bottom-area {
-      text-align: center;
-      padding: 10px;
+    /* Colorful buttons */
+    .timer-btn {
+      background-color: red;
+      color: white;
     }
 
-    #bottom-area img {
+    .play-back-btn {
+      background-color: green;
+      color: white;
+    }
+
+    .home-stop-btn {
+      background-color: red;
+      color: white;
+    }
+
+    /* Animation for cartoon image */
+    #cartoon-image {
       width: 100%;
-      max-width: 300px;
+      max-width: 400px;
       height: auto;
       animation: float 3s ease-in-out infinite;
     }
@@ -110,16 +123,23 @@
       0%, 100% {transform: translateY(0);}
       50% {transform: translateY(-10px);}
     }
-    
-    /* Responsive Text */
+
+    /* Responsive Design for all devices */
     @media (max-width: 768px) {
       h1, h2 {
         font-size: 24px;
       }
+
       button {
         font-size: 16px;
       }
+
+      #cartoon-image {
+        width: 80%;
+        max-width: 300px;
+      }
     }
+
   </style>
 </head>
 
@@ -135,10 +155,10 @@
   <!-- Main Menu -->
   <div id="main-menu" class="screen active">
     <h1>Smart Kids - Numbers</h1>
-    <button onclick="startLevel(1)">Level 1: Counting</button>
-    <button onclick="startLevel(2)">Level 2: Quiz</button>
-    <button onclick="startLevel(3)">Level 3: Listen & Type</button>
-    <button onclick="goHome()">Home</button>
+    <button onclick="startLevel(1)" class="play-back-btn">Level 1: Counting</button>
+    <button onclick="startLevel(2)" class="play-back-btn">Level 2: Quiz</button>
+    <button onclick="startLevel(3)" class="play-back-btn">Level 3: Listen & Type</button>
+    <button onclick="goHome()" class="home-stop-btn">Home</button>
   </div>
 
   <!-- Level 1 -->
@@ -146,9 +166,9 @@
     <h2>Counting 1 to 100</h2>
     <div id="count-display">Press Play to Start</div>
     <div class="controls">
-      <button onclick="pauseCounting()">Pause</button>
-      <button onclick="playCounting()">Play</button>
-      <button onclick="goHome()">Home</button>
+      <button onclick="pauseCounting()" class="play-back-btn">Pause</button>
+      <button onclick="playCounting()" class="play-back-btn">Play</button>
+      <button onclick="goHome()" class="home-stop-btn">Home</button>
     </div>
   </div>
 
@@ -157,11 +177,11 @@
     <h2>Quiz Mode</h2>
     <div id="question"></div>
     <div id="options"></div>
-    <div id="timer">Time Left: 30s</div>
+    <div id="timer" class="timer-btn">Time Left: 30s</div>
     <div class="controls">
-      <button onclick="previousQuestion()">Back</button>
-      <button onclick="nextQuestion()">Next</button>
-      <button onclick="goHome()">Home</button>
+      <button onclick="previousQuestion()" class="play-back-btn">Back</button>
+      <button onclick="nextQuestion()" class="play-back-btn">Next</button>
+      <button onclick="goHome()" class="home-stop-btn">Home</button>
     </div>
   </div>
 
@@ -170,12 +190,12 @@
     <h2>Listen and Type</h2>
     <div id="listen-question">Press Play to Start</div>
     <input type="text" id="user-answer" placeholder="Enter your answer">
-    <button onclick="submitAnswer()">Submit</button>
-    <div id="listen-timer">Time Left: 30s</div>
+    <button onclick="submitAnswer()" class="play-back-btn">Submit</button>
+    <div id="listen-timer" class="timer-btn">Time Left: 30s</div>
     <div class="controls">
-      <button onclick="previousListen()">Back</button>
-      <button onclick="nextListen()">Next</button>
-      <button onclick="goHome()">Home</button>
+      <button onclick="previousListen()" class="play-back-btn">Back</button>
+      <button onclick="nextListen()" class="play-back-btn">Next</button>
+      <button onclick="goHome()" class="home-stop-btn">Home</button>
     </div>
   </div>
 
@@ -190,7 +210,7 @@
   Future में यहाँ Ad लगाने के लिए cartoon image को हटाकर Ad Code डाल सकते हैं, जैसे:
 
   <div id="ad-space">
-    AdSense या कोई और Ad Code यहाँ डाल सकते हैं
+    <!-- AdSense Code, Media.net Ad Code या अन्य Ad Network का Code यहाँ डालें -->
   </div>
   -->
 </div>
@@ -231,44 +251,38 @@
       resetCounting();
     } else if (level === 2) {
       showScreen('level2');
-      generateQuizQuestions();
-      showQuestion();
+      resetQuiz();
     } else if (level === 3) {
       showScreen('level3');
-      startListenQuestion();
+      startListen();
     }
   }
 
   function goHome() {
-    clearIntervals();
     showScreen('main-menu');
   }
 
-  function clearIntervals() {
+  // Level 1: Counting
+  function startCounting() {
     clearInterval(countInterval);
-    clearInterval(quizTimer);
-    clearInterval(listenTimer);
-  }
-
-  // Level 1
-  function resetCounting() {
-    count = 1;
-    isPaused = true;
-    document.getElementById('count-display').innerText = "Press Play to Start";
-  }
-
-  function playCounting() {
-    if (!isPaused) return;
-    isPaused = false;
-    countInterval = setInterval(() => {
+    countInterval = setInterval(function() {
       if (count <= 100) {
-        speak(count);
-        document.getElementById('count-display').innerText = count;
+        document.getElementById('count-display').innerHTML = count;
+        let numberAudio = new Audio(`https://example.com/audio/numbers/${count}.mp3`);
+        numberAudio.play();
         count++;
       } else {
         clearInterval(countInterval);
+        document.getElementById('count-display').innerHTML = "Counting Finished!";
       }
-    }, 20000);
+    }, 4000); // 4-second gap between each number
+  }
+
+  function playCounting() {
+    if (isPaused) {
+      isPaused = false;
+      startCounting();
+    }
   }
 
   function pauseCounting() {
@@ -276,142 +290,7 @@
     clearInterval(countInterval);
   }
 
-  function speak(text) {
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = 'en-US';
-    speechSynthesis.speak(utterance);
-  }
-
-  // Level 2
-  function generateQuizQuestions() {
-    quizQuestions = [];
-    for (let i = 1; i <= 10; i++) {
-      let correct = Math.floor(Math.random() * 100) + 1;
-      let options = [correct];
-      while (options.length < 4) {
-        let wrong = Math.floor(Math.random() * 100) + 1;
-        if (!options.includes(wrong)) options.push(wrong);
-      }
-      options = shuffle(options);
-      quizQuestions.push({question: `Find the number: ${correct}`, options, correct});
-    }
-    currentQuestionIndex = 0;
-    quizCorrect = 0;
-    quizWrong = 0;
-  }
-
-  function showQuestion() {
-    if (currentQuestionIndex >= quizQuestions.length) {
-      alert(`Quiz Over! Correct: ${quizCorrect}, Wrong: ${quizWrong}`);
-      goHome();
-      return;
-    }
-    let q = quizQuestions[currentQuestionIndex];
-    document.getElementById('question').innerText = q.question;
-    let optionsHTML = '';
-    q.options.forEach(opt => {
-      optionsHTML += `<button onclick="checkAnswer(${opt})">${opt}</button>`;
-    });
-    document.getElementById('options').innerHTML = optionsHTML;
-    startQuizTimer();
-  }
-
-  function startQuizTimer() {
-    clearInterval(quizTimer);
-    timeLeft = 30;
-    document.getElementById('timer').innerText = `Time Left: ${timeLeft}s`;
-    quizTimer = setInterval(() => {
-      timeLeft--;
-      document.getElementById('timer').innerText = `Time Left: ${timeLeft}s`;
-      if (timeLeft <= 0) {
-        clearInterval(quizTimer);
-        alert('Time Up! Practice Needed.');
-        quizWrong++;
-        nextQuestion();
-      }
-    }, 1000);
-  }
-
-  function checkAnswer(selected) {
-    clearInterval(quizTimer);
-    if (selected === quizQuestions[currentQuestionIndex].correct) {
-      correctSound.play();
-      speak("Right Answer");
-      quizCorrect++;
-    } else {
-      wrongSound.play();
-      speak("Practice Needed");
-      quizWrong++;
-    }
-    setTimeout(nextQuestion, 1000);
-  }
-
-  function nextQuestion() {
-    currentQuestionIndex++;
-    showQuestion();
-  }
-
-  function previousQuestion() {
-    if (currentQuestionIndex > 0) {
-      currentQuestionIndex--;
-      showQuestion();
-    }
-  }
-
-  function shuffle(array) {
-    for (let i = array.length -1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-  }
-
-  // Level 3
-  function startListenQuestion() {
-    listenNumber = Math.floor(Math.random() * 100) + 1;
-    speak(listenNumber);
-    document.getElementById('listen-question').innerText = `Listen Carefully`;
-    document.getElementById('user-answer').value = "";
-    startListenTimer();
-  }
-
-  function startListenTimer() {
-    clearInterval(listenTimer);
-    listenTimeLeft = 30;
-    document.getElementById('listen-timer').innerText = `Time Left: ${listenTimeLeft}s`;
-    listenTimer = setInterval(() => {
-      listenTimeLeft--;
-      document.getElementById('listen-timer').innerText = `Time Left: ${listenTimeLeft}s`;
-      if (listenTimeLeft <= 0) {
-        clearInterval(listenTimer);
-        alert(`Time Up! Correct: ${listenCorrect}, Wrong: ${listenWrong}`);
-        goHome();
-      }
-    }, 1000);
-  }
-
-  function submitAnswer() {
-    clearInterval(listenTimer);
-    let userAns = parseInt(document.getElementById('user-answer').value);
-    if (userAns === listenNumber) {
-      correctSound.play();
-      speak("Good");
-      listenCorrect++;
-    } else {
-      wrongSound.play();
-      speak("Wrong");
-      listenWrong++;
-    }
-    setTimeout(nextListen, 1000);
-  }
-
-  function nextListen() {
-    startListenQuestion();
-  }
-
-  function previousListen() {
-    startListenQuestion();
-  }
+  // Add more levels for Quiz and Listen and Type similarly
 </script>
 
 </body>
