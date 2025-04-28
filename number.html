@@ -1,296 +1,192 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Number Game</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-      font-weight: bold;
-      background: linear-gradient(to right, #ffecd2, #fcb69f);
-      overflow-x: hidden;
-    }
-    .container {
-      padding: 10px;
-      text-align: center;
-    }
-    h1 {
-      color: #333;
-    }
-    .level-select, .quiz, .counting, .input-mode, .upload-ads {
-      display: none;
-    }
-    button {
-      margin: 5px;
-      padding: 10px 20px;
-      font-size: 16px;
-      border-radius: 10px;
-      border: none;
-      cursor: pointer;
-    }
-    .option {
-      display: block;
-      margin: 10px auto;
-      padding: 10px;
-      width: 80%;
-      font-size: 20px;
-      border-radius: 8px;
-    }
-    .option1 { background-color: #ff9999; }
-    .option2 { background-color: #99ccff; }
-    .option3 { background-color: #99ff99; }
-    .option4 { background-color: #ffff99; }
-    .timer { color: red; font-size: 24px; margin: 10px; }
-    .play, .back { background-color: green; color: white; }
-    .home, .stop { background-color: red; color: white; }
-    #animation {
-      margin-top: 20px;
-    }
-    .ad-section {
-      margin: 20px;
-      border: 2px dashed #333;
-      padding: 20px;
-      min-height: 150px;
-    }
-    video, img {
-      max-width: 100%;
-      height: auto;
-    }
-    .ad-info {
-      font-size: 14px;
-      color: #555;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            text-align: center;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            margin: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .play-btn {
+            background-color: green;
+            color: white;
+        }
+        .pause-btn {
+            background-color: brown;
+            color: white;
+        }
+        .back-btn {
+            background-color: red;
+            color: white;
+        }
+        .ads-section {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #333;
+            color: white;
+            border-radius: 10px;
+        }
+        .ads-upload-section {
+            margin-top: 20px;
+        }
+        .ads-upload-section input {
+            margin: 10px;
+        }
+        .ads-pricing {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+        .ads-pricing p {
+            margin: 5px 0;
+        }
+        .audio-section {
+            margin-top: 20px;
+        }
+        .audio-section select {
+            padding: 5px;
+            font-size: 16px;
+        }
+        .audio-control {
+            margin-top: 20px;
+        }
+        .audio-control button {
+            font-size: 16px;
+            padding: 10px;
+            margin: 5px;
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Number Game</h1>
-    <div class="level-select">
-      <h2>Choose Level</h2>
-      <button onclick="startLevel(1)">Level 1 - Counting</button>
-      <button onclick="startLevel(2)">Level 2 - Quiz Mode</button>
-      <button onclick="startLevel(3)">Level 3 - Input Mode</button>
-      <br><br>
-      <button class="home" onclick="goHome()">Home</button>
-    </div><div class="counting">
-  <h2>Counting Numbers</h2>
-  <div id="countDisplay"></div>
-  <button class="play" onclick="playCounting()">Play</button>
-  <button class="stop" onclick="pauseCounting()">Pause</button>
-  <br><br>
-  <button class="back" onclick="showLevelSelect()">Back</button>
-  <button class="home" onclick="goHome()">Home</button>
-</div>
+    <h1>Number Game - Level 1: Counting</h1>
 
-<div class="quiz">
-  <h2>Quiz Time</h2>
-  <div id="question"></div>
-  <div class="timer" id="timer"></div>
-  <button class="option option1" id="opt1" onclick="checkAnswer(1)"></button>
-  <button class="option option2" id="opt2" onclick="checkAnswer(2)"></button>
-  <button class="option option3" id="opt3" onclick="checkAnswer(3)"></button>
-  <button class="option option4" id="opt4" onclick="checkAnswer(4)"></button>
-  <br>
-  <button class="back" onclick="showLevelSelect()">Back</button>
-  <button class="home" onclick="goHome()">Home</button>
-</div>
+    <!-- Language selection for audio -->
+    <div class="audio-section">
+        <label for="language">Select Language for Audio:</label>
+        <select id="language">
+            <option value="english">English</option>
+            <option value="hindi">Hindi</option>
+        </select>
+    </div>
 
-<div class="input-mode">
-  <h2>Type the Number</h2>
-  <div id="speakNumber"></div>
-  <input type="number" id="userInput" placeholder="Enter number">
-  <button onclick="submitInput()">Submit</button>
-  <div id="inputResult"></div>
-  <div class="timer" id="inputTimer"></div>
-  <br>
-  <button class="back" onclick="showLevelSelect()">Back</button>
-  <button class="home" onclick="goHome()">Home</button>
-</div>
+    <!-- Counting Section -->
+    <div id="counting-section">
+        <button class="play-btn" onclick="startCounting()">Play</button>
+        <button class="pause-btn" onclick="pauseCounting()">Pause</button>
+        <button class="back-btn" onclick="goBack()">Back</button>
+    </div>
 
-<div class="upload-ads">
-  <h2>Upload Ads/Message</h2>
-  <input type="file" id="adUpload" accept="image/*,video/*">
-  <button onclick="uploadAd()">Upload</button>
-  <div class="ad-info" id="adInfo" style="display:none;">
-    <h3>Ad Pricing:</h3>
-    <ul>
-      <li>14 days - ₹99</li>
-      <li>30 days - ₹149</li>
-      <li>60 days - ₹249</li>
-      <li>180 days - ₹499</li>
-      <li>364 days - ₹999</li>
-    </ul>
-    <p><small>Terms and Conditions apply.</small></p>
-  </div>
-  <div class="ad-section" id="adSection">
-    <img src="https://cdn.pixabay.com/photo/2017/01/31/13/14/boy-2023989_960_720.png" alt="Animation">
-  </div>
-  <br>
-  <button class="back" onclick="showLevelSelect()">Back</button>
-  <button class="home" onclick="goHome()">Home</button>
-</div>
+    <div class="ads-section">
+        <h2>Ads Section</h2>
+        <div class="ads-upload-section">
+            <input type="file" id="ads-file" accept="image/*,video/*">
+            <button onclick="uploadAds()">Upload Ads</button>
+        </div>
+        <div id="uploaded-ads"></div>
+    </div>
 
-  </div>  <script>
-    let level = 0;
-    let countingInterval;
-    let current = 1;
-    let countingPaused = true;
+    <div class="ads-pricing">
+        <h3>Ad Pricing Plans</h3>
+        <p>14 days: ₹99</p>
+        <p>30 days: ₹149</p>
+        <p>60 days: ₹249</p>
+        <p>180 days: ₹499</p>
+        <p>364 days: ₹999</p>
+        <p><strong>Terms and conditions apply.</strong></p>
+    </div>
 
-    function goHome() {
-      window.location.href = 'index.html';
-    }
+    <div class="audio-control">
+        <button onclick="playAudio()">Play Audio</button>
+        <button onclick="stopAudio()">Stop Audio</button>
+    </div>
 
-    function showLevelSelect() {
-      document.querySelectorAll('.counting, .quiz, .input-mode, .upload-ads').forEach(div => div.style.display = 'none');
-      document.querySelector('.level-select').style.display = 'block';
-      clearInterval(countingInterval);
-    }
+    <script>
+        // Global Variables
+        let countingInterval;
+        let currentNumber = 1;
+        let language = document.getElementById('language').value;
+        let audio;
 
-    function startLevel(lvl) {
-      level = lvl;
-      document.querySelector('.level-select').style.display = 'none';
-      if (lvl === 1) {
-        document.querySelector('.counting').style.display = 'block';
-        playCounting();
-      } else if (lvl === 2) {
-        document.querySelector('.quiz').style.display = 'block';
-        startQuiz();
-      } else if (lvl === 3) {
-        document.querySelector('.input-mode').style.display = 'block';
-        startInputMode();
-      }
-    }
+        // Language change event
+        document.getElementById('language').addEventListener('change', function() {
+            language = this.value;
+        });
 
-    function playCounting() {
-      countingPaused = false;
-      countingInterval = setInterval(() => {
-        if (!countingPaused) {
-          document.getElementById('countDisplay').innerText = current;
-          speak(current);
-          current++;
-          if (current > 100) clearInterval(countingInterval);
+        // Start counting from 1 to 100
+        function startCounting() {
+            countingInterval = setInterval(() => {
+                if (currentNumber <= 100) {
+                    speakNumber(currentNumber);
+                    currentNumber++;
+                } else {
+                    clearInterval(countingInterval);
+                    alert("Level 1 Completed! Proceed to Level 2.");
+                }
+            }, 2000);  // 2 seconds gap
         }
-      }, 4000);
-    }
 
-    function pauseCounting() {
-      countingPaused = true;
-    }
-
-    function speak(text) {
-      let utterance = new SpeechSynthesisUtterance(text);
-      window.speechSynthesis.speak(utterance);
-    }
-
-    // Quiz Mode
-    let quizTimer;
-    let correctAnswer;
-    let correctCount = 0;
-    let wrongCount = 0;
-
-    function startQuiz() {
-      generateQuestion();
-      startQuizTimer();
-    }
-
-    function generateQuestion() {
-      let a = Math.floor(Math.random() * 100) + 1;
-      correctAnswer = a;
-      document.getElementById('question').innerText = `What is the number?`;
-      let options = [a];
-      while (options.length < 4) {
-        let random = Math.floor(Math.random() * 100) + 1;
-        if (!options.includes(random)) options.push(random);
-      }
-      options.sort(() => Math.random() - 0.5);
-      options.forEach((opt, idx) => document.getElementById(`opt${idx+1}`).innerText = opt);
-    }
-
-    function checkAnswer(selected) {
-      let selectedValue = document.getElementById(`opt${selected}`).innerText;
-      if (selectedValue == correctAnswer) {
-        speak('Right Answer');
-        correctCount++;
-      } else {
-        speak('You need more practice');
-        wrongCount++;
-      }
-      generateQuestion();
-    }
-
-    function startQuizTimer() {
-      let timeLeft = 120;
-      quizTimer = setInterval(() => {
-        document.getElementById('timer').innerText = `${timeLeft}s`;
-        timeLeft--;
-        if (timeLeft < 0) {
-          clearInterval(quizTimer);
-          alert(`Time Over! Correct: ${correctCount}, Wrong: ${wrongCount}`);
-          showLevelSelect();
+        // Pause counting
+        function pauseCounting() {
+            clearInterval(countingInterval);
         }
-      }, 1000);
-    }
 
-    // Input Mode
-    let inputTimerInterval;
-    function startInputMode() {
-      newSpeakNumber();
-      startInputTimer();
-    }
-
-    function newSpeakNumber() {
-      let number = Math.floor(Math.random() * 100) + 1;
-      document.getElementById('speakNumber').innerText = 'Listen and Type';
-      speak(number);
-      correctAnswer = number;
-    }
-
-    function submitInput() {
-      let userVal = document.getElementById('userInput').value;
-      if (parseInt(userVal) === correctAnswer) {
-        document.getElementById('inputResult').innerText = 'Good';
-      } else {
-        document.getElementById('inputResult').innerText = 'Wrong';
-      }
-      newSpeakNumber();
-      document.getElementById('userInput').value = '';
-    }
-
-    function startInputTimer() {
-      let timeLeft = 120;
-      inputTimerInterval = setInterval(() => {
-        document.getElementById('inputTimer').innerText = `${timeLeft}s`;
-        timeLeft--;
-        if (timeLeft < 0) {
-          clearInterval(inputTimerInterval);
-          alert(`Time Over!`);
-          showLevelSelect();
+        // Back button function
+        function goBack() {
+            window.location.href = "index.html";
         }
-      }, 1000);
-    }
 
-    // Upload Ad
-    function uploadAd() {
-      const file = document.getElementById('adUpload').files[0];
-      if (file) {
-        if (file.size > 60000000) {
-          alert('Video must be less than 59 seconds (~60MB).');
-          return;
+        // Speak the number based on selected language
+        function speakNumber(number) {
+            let msg = new SpeechSynthesisUtterance(number);
+            if (language === 'hindi') {
+                msg.lang = 'hi-IN';
+            } else {
+                msg.lang = 'en-US';
+            }
+            speechSynthesis.speak(msg);
         }
-        let url = URL.createObjectURL(file);
-        let adSection = document.getElementById('adSection');
-        if (file.type.startsWith('video')) {
-          adSection.innerHTML = `<video controls src="${url}"></video>`;
-        } else {
-          adSection.innerHTML = `<img src="${url}">`;
-        }
-        document.getElementById('adInfo').style.display = 'block';
-      }
-    }
 
-    // Initialize
-    showLevelSelect();
-  </script></body>
+        // Audio play function
+        function playAudio() {
+            audio = new Audio('path_to_your_audio_file.mp3');
+            audio.play();
+        }
+
+        function stopAudio() {
+            if (audio) {
+                audio.pause();
+                audio.currentTime = 0;
+            }
+        }
+
+        // Ads file upload function
+        function uploadAds() {
+            let file = document.getElementById('ads-file').files[0];
+            if (file) {
+                let fileType = file.type.split('/')[0];
+                let fileReader = new FileReader();
+                
+                fileReader.onload = function(e) {
+                    let uploadedAdsDiv = document.getElementById('uploaded-ads');
+                    if (fileType === 'image') {
+                        uploadedAdsDiv.innerHTML = `<img src="${e.target.result}" width="100%" height="auto">`;
+                    } else if (fileType === 'video') {
+                        uploadedAdsDiv.innerHTML = `<video controls width="100%" height="auto"><source src="${e.target.result}" type="${file.type}"></video>`;
+                    }
+                };
+
+                fileReader.readAsDataURL(file);
+            }
+        }
+    </script>
+</body>
 </html>
