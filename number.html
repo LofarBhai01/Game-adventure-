@@ -7,198 +7,166 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f0f8ff;
-            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
             padding: 20px;
-        }
-
-        .btn {
-            padding: 10px 20px;
-            font-size: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
             border-radius: 8px;
-            margin: 10px;
-            cursor: pointer;
-            border: none;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
         }
-
-        .green {
+        .header, .footer {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .level-buttons {
+            display: flex;
+            justify-content: space-evenly;
+            margin-bottom: 30px;
+        }
+        .level-buttons button {
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
             background-color: #4CAF50;
             color: white;
+            border: none;
+            border-radius: 5px;
         }
-
-        .red {
+        .level-buttons button:hover {
+            background-color: #45a049;
+        }
+        .ads-section {
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #eeeeee;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .ads-section p {
+            font-size: 18px;
+        }
+        .message {
+            background-color: #ffeb3b;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .speak-again-btn {
+            padding: 10px 20px;
             background-color: #f44336;
             color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
         }
-
-        .brown {
-            background-color: #795548;
-            color: white;
-        }
-
-        .blue {
-            background-color: #2196F3;
-            color: white;
-        }
-
-        .ads-section {
-            margin-top: 20px;
-            border-top: 2px solid #ccc;
-            padding-top: 20px;
-        }
-
-        .ads-section img {
-            max-width: 100%;
-            height: auto;
+        .speak-again-btn:hover {
+            background-color: #e53935;
         }
     </style>
 </head>
 <body>
 
-<h1>Welcome to Number Game</h1>
-
-<!-- Age Verification Section -->
-<div id="age-verification">
-    <h2>Please Enter Your Age</h2>
-    <input type="number" id="user-age" placeholder="Enter your age">
-    <button class="btn green" onclick="checkAge()">Submit</button>
-</div>
-
-<!-- Level 1: Counting -->
-<div id="level1" style="display:none;">
-    <h2>Level 1: Counting</h2>
-    <p id="counting-text"></p>
-    <button class="btn green" onclick="startCounting()">Start Counting</button>
-    <button class="btn brown" onclick="pauseCounting()">Pause</button>
-    <button class="btn red" onclick="goBack()">Back</button>
-    <button class="btn blue" onclick="goToNextLevel(2)">Next Level</button>
-    <div class="ads-section">
-        <h3>Advertisement Section</h3>
-        <img src="https://via.placeholder.com/300x150" alt="Advertisement">
-        <p>Advertise with us! Click to upload your ad.</p>
+<div class="container">
+    <div class="header">
+        <h1>Welcome to the Number Game</h1>
     </div>
-</div>
 
-<!-- Level 2: Quiz -->
-<div id="level2" style="display:none;">
-    <h2>Level 2: Quiz</h2>
-    <p id="question-text"></p>
-    <button class="btn green" onclick="answerQuestion(1)">Option 1</button>
-    <button class="btn green" onclick="answerQuestion(2)">Option 2</button>
-    <button class="btn green" onclick="answerQuestion(3)">Option 3</button>
-    <button class="btn green" onclick="answerQuestion(4)">Option 4</button>
-    <button class="btn red" onclick="goBack()">Back</button>
-    <button class="btn blue" onclick="goToNextLevel(3)">Next Level</button>
-    <div class="ads-section">
-        <h3>Advertisement Section</h3>
-        <img src="https://via.placeholder.com/300x150" alt="Advertisement">
-        <p>Advertise with us! Click to upload your ad.</p>
+    <!-- Level Selection Buttons -->
+    <div class="level-buttons">
+        <button onclick="startLevel('level1')">Start Level 1</button>
+        <button onclick="startLevel('level2')">Start Level 2 (Quiz)</button>
+        <button onclick="startLevel('level3')">Start Level 3 (Write)</button>
     </div>
-</div>
 
-<!-- Level 3: Input Mode -->
-<div id="level3" style="display:none;">
-    <h2>Level 3: Input Mode</h2>
-    <p id="input-question"></p>
-    <input type="text" id="user-input">
-    <button class="btn green" onclick="submitAnswer()">Submit</button>
-    <button class="btn red" onclick="goBack()">Back</button>
+    <!-- Ads Section -->
     <div class="ads-section">
-        <h3>Advertisement Section</h3>
-        <img src="https://via.placeholder.com/300x150" alt="Advertisement">
-        <p>Advertise with us! Click to upload your ad.</p>
+        <p>Advertisement Area: You can upload your ads here.</p>
+        <div class="message">Special Offer: Get 50% off on your first ad placement!</div>
+    </div>
+
+    <!-- Speak Again Button for Level 3 -->
+    <div id="speak-again-container" style="display: none;">
+        <button class="speak-again-btn" onclick="speakQuestion()">Speak Again</button>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>&copy; 2025 Number Game. All rights reserved.</p>
     </div>
 </div>
 
 <script>
-    let currentLevel = 0;
+    let level = '';
+    let questionIndex = 0;
 
-    // Check the age of the user
-    function checkAge() {
-        let age = document.getElementById('user-age').value;
-        if (age <= 7) {
-            // Show level 1 if age is 7 or less
-            goToLevel(1);
-        } else {
-            // Show option to go to level 2 or 3 if age is more than 7
-            showLevelOptions();
+    function startLevel(levelName) {
+        level = levelName;
+        // Hide speak again button initially
+        document.getElementById('speak-again-container').style.display = 'none';
+        console.log("Starting " + levelName);
+
+        if (level === 'level2') {
+            // Display Quiz questions
+            showQuizQuestion();
+        } else if (level === 'level3') {
+            // Start writing level with speech
+            startWriteLevel();
         }
     }
 
-    // Show level selection options for users above 7 years
-    function showLevelOptions() {
-        let levelSelection = confirm("You are eligible for Level 2 and Level 3. Would you like to play Level 2 or Level 3?");
-        if (levelSelection) {
-            let selectedLevel = prompt("Enter '2' for Level 2 or '3' for Level 3:");
-            if (selectedLevel == "2") {
-                goToLevel(2);
-            } else if (selectedLevel == "3") {
-                goToLevel(3);
-            }
-        }
+    function showQuizQuestion() {
+        // Example question for quiz level
+        const questions = [
+            { question: "What is 2 + 2?", options: ['4', '5', '6', '7'], correct: '4' },
+            { question: "What is 3 + 5?", options: ['7', '8', '9', '10'], correct: '8' },
+            { question: "What is 6 + 7?", options: ['12', '13', '14', '15'], correct: '13' }
+        ];
+
+        const currentQuestion = questions[questionIndex];
+        const questionElement = document.createElement('div');
+        questionElement.innerHTML = `<h2>${currentQuestion.question}</h2>`;
+        document.body.appendChild(questionElement);
+
+        currentQuestion.options.forEach(option => {
+            const optionButton = document.createElement('button');
+            optionButton.innerHTML = option;
+            optionButton.onclick = function() {
+                if (option === currentQuestion.correct) {
+                    alert("Good! Correct answer.");
+                    questionIndex++;
+                    if (questionIndex < questions.length) {
+                        showQuizQuestion();
+                    } else {
+                        alert("Quiz Completed!");
+                    }
+                } else {
+                    alert("Wrong answer, try again!");
+                }
+            };
+            document.body.appendChild(optionButton);
+        });
     }
 
-    // Go to the selected level
-    function goToLevel(level) {
-        currentLevel = level;
-        showLevel(level);
+    function startWriteLevel() {
+        // Example speech for level 3
+        const speechText = "Please write the number three";
+        alert(speechText);
+
+        // Add Speak Again Button
+        document.getElementById('speak-again-container').style.display = 'block';
     }
 
-    // Show specific level
-    function showLevel(level) {
-        document.getElementById("age-verification").style.display = "none";
-        document.getElementById("level1").style.display = "none";
-        document.getElementById("level2").style.display = "none";
-        document.getElementById("level3").style.display = "none";
-        
-        if (level === 1) {
-            document.getElementById("level1").style.display = "block";
-        } else if (level === 2) {
-            document.getElementById("level2").style.display = "block";
-        } else if (level === 3) {
-            document.getElementById("level3").style.display = "block";
-        }
-    }
-
-    // Go back to the level selection screen
-    function goBack() {
-        showLevel(0);
-    }
-
-    // Level 1: Counting logic
-    function startCounting() {
-        document.getElementById("counting-text").innerText = "Counting: 1, 2, 3..."; // Logic for counting
-    }
-
-    function pauseCounting() {
-        // Logic to pause counting
-    }
-
-    // Level 2: Quiz logic
-    function answerQuestion(option) {
-        if (option === 1) {
-            alert("Correct Answer!");
-            goToNextLevel(3);
-        } else {
-            alert("Wrong Answer! Try Again.");
-        }
-    }
-
-    // Level 3: Input Mode logic
-    function submitAnswer() {
-        const userAnswer = document.getElementById("user-input").value;
-        if (userAnswer === "correct") {
-            alert("Correct Answer!");
-            goToNextLevel(3);
-        } else {
-            alert("Wrong Answer! Try Again.");
-        }
-    }
-
-    // Go to next level (Level 2 or Level 3)
-    function goToNextLevel(level) {
-        currentLevel = level;
-        showLevel(level);
+    function speakQuestion() {
+        // Speak the current question or instruction again
+        alert("Please write the number three");
     }
 </script>
 
