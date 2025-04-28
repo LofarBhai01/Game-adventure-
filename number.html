@@ -2,285 +2,355 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Learn Numbers - Game Adventure</title>
+    <title>Smart Kids: Numbers</title>
     <style>
+        /* Styling */
         body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #e6f7ff;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: linear-gradient(45deg, #ff9a9e, #fad0c4, #fbc2eb, #a6c1ee);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
             margin: 0;
             padding: 0;
-        }
-        h1 {
-            margin-top: 30px;
+            text-align: center;
             color: #333;
         }
-        .level-section {
-            margin-top: 20px;
+
+        @keyframes gradientBG {
+            0% {background-position: 0% 50%;}
+            50% {background-position: 100% 50%;}
+            100% {background-position: 0% 50%;}
         }
-        .number {
-            font-size: 80px;
-            margin: 20px;
-            color: #555;
+
+        .screen {
+            display: none;
+            padding: 20px;
         }
-        .button {
-            padding: 12px 24px;
+
+        .screen.active {
+            display: block;
+            animation: fadeIn 1s ease;
+        }
+
+        @keyframes fadeIn {
+            from {opacity: 0;}
+            to {opacity: 1;}
+        }
+
+        button {
             margin: 10px;
+            padding: 15px 30px;
             font-size: 18px;
-            background-color: #4CAF50;
-            color: white;
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             cursor: pointer;
+            background: linear-gradient(145deg, #a1c4fd, #c2e9fb);
+            box-shadow: 3px 3px 10px rgba(0,0,0,0.2);
+            transition: transform 0.2s, background 0.3s;
         }
-        .button:hover {
-            background-color: #45a049;
+
+        button:hover {
+            transform: scale(1.1);
+            background: linear-gradient(145deg, #c2e9fb, #a1c4fd);
         }
-        .option-btn {
+
+        #options button {
             display: block;
             width: 200px;
             margin: 10px auto;
-            padding: 12px;
-            font-size: 18px;
-            background-color: #2196F3;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
         }
-        .option-btn:hover {
-            background-color: #0b7dda;
-        }
-        input[type="number"] {
+
+        input[type="text"] {
             padding: 10px;
-            font-size: 20px;
+            width: 200px;
+            font-size: 18px;
+            border-radius: 10px;
+            border: 2px solid #ccc;
+        }
+
+        .controls {
             margin-top: 20px;
         }
-        .tali {
-            font-size: 30px;
-            color: #f4c542;
-            margin-top: 20px;
-            display: none;
-        }
-        .error-msg {
-            font-size: 20px;
-            color: red;
-            margin-top: 20px;
-            display: none;
-        }
-        #timer {
-            font-size: 30px;
-            color: #f44336;
-            margin-top: 10px;
+
+        h1, h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
         }
     </style>
 </head>
+
 <body>
 
-    <h1>Learn Numbers</h1>
+<!-- Background Music and Sound Effects -->
+<audio id="backgroundMusic" src="https://cdn.pixabay.com/audio/2022/03/15/audio_74e749d297.mp3" loop autoplay></audio>
+<audio id="correctSound" src="https://cdn.pixabay.com/audio/2022/03/01/audio_42b8495a9d.mp3"></audio>
+<audio id="wrongSound" src="https://cdn.pixabay.com/audio/2022/03/01/audio_87c3ed3edb.mp3"></audio>
 
-    <!-- Level 1 -->
-    <div id="level-container" class="level-section">
-        <h2>Level 1: पहचानिए संख्या</h2>
-        <div id="numberDisplay" class="number"></div>
-        <button class="button" onclick="nextNumber()">Next Number</button>
-        <br><br>
-        <button class="button" onclick="goToLevel(2)">Go to Level 2</button>
+<!-- Main Menu -->
+<div id="main-menu" class="screen active">
+    <h1>Smart Kids - Numbers</h1>
+    <button onclick="startLevel(1)">Level 1: Counting</button>
+    <button onclick="startLevel(2)">Level 2: Quiz</button>
+    <button onclick="startLevel(3)">Level 3: Listen & Type</button>
+    <button onclick="goHome()">Home</button>
+</div>
+
+<!-- Level 1 -->
+<div id="level1" class="screen">
+    <h2>Counting 1 to 100</h2>
+    <div id="count-display">Press Play to Start</div>
+    <div class="controls">
+        <button onclick="pauseCounting()">Pause</button>
+        <button onclick="playCounting()">Play</button>
+        <button onclick="goHome()">Home</button>
     </div>
+</div>
 
-    <!-- Level 2 -->
-    <div id="level2-container" class="level-section" style="display:none;">
-        <h2>Level 2: सही उत्तर चुनिए</h2>
-        <div id="timer"></div>
-        <div id="questionNumber" class="number"></div>
-        <div id="optionsContainer"></div>
-        <button class="button" onclick="nextQuestion()">Next Question</button><br><br>
-        <button class="button" onclick="goToLevel(3)">Go to Level 3</button>
-        <div id="error-msg" class="error-msg">आप ने गलत चुनाव किया है!</div>
+<!-- Level 2 -->
+<div id="level2" class="screen">
+    <h2>Quiz Mode</h2>
+    <div id="question"></div>
+    <div id="options"></div>
+    <div id="timer">Time Left: 30s</div>
+    <div class="controls">
+        <button onclick="previousQuestion()">Back</button>
+        <button onclick="nextQuestion()">Next</button>
+        <button onclick="goHome()">Home</button>
     </div>
+</div>
 
-    <!-- Level 3 -->
-    <div id="level3-container" class="level-section" style="display:none;">
-        <h2>Level 3: Listen and Write</h2>
-        <div id="writeQuestion" class="number"></div>
-        <input type="number" id="userInput" placeholder="Type the number">
-        <button class="button" onclick="checkAnswer()">Submit</button><br><br>
-        <button class="button" onclick="repeatSound()">Repeat Sound</button>
-        <div id="tali" class="tali">👏👏👏</div>
-        <div id="error-msg" class="error-msg">गलत उत्तर। सही से सुनो और फिर कोशिश करो!</div>
+<!-- Level 3 -->
+<div id="level3" class="screen">
+    <h2>Listen and Type</h2>
+    <div id="listen-question">Press Play to Start</div>
+    <input type="text" id="user-answer" placeholder="Enter your answer">
+    <button onclick="submitAnswer()">Submit</button>
+    <div id="listen-timer">Time Left: 30s</div>
+    <div class="controls">
+        <button onclick="previousListen()">Back</button>
+        <button onclick="nextListen()">Next</button>
+        <button onclick="goHome()">Home</button>
     </div>
+</div>
 
-    <script>
-        let level = 1;
-        let currentNumber = 1;
-        let timer;
-        let correctAnswer2 = 0;
-        let correctAnswers2 = 0;
-        let wrongAnswers2 = 0;
+<script>
+    /* JavaScript */
+    let currentLevel = 0;
+    let count = 1;
+    let countInterval;
+    let isPaused = false;
+    let quizQuestions = [];
+    let currentQuestionIndex = 0;
+    let quizTimer;
+    let timeLeft = 30;
+    let quizCorrect = 0;
+    let quizWrong = 0;
+    let listenNumber = 0;
+    let listenTimer;
+    let listenTimeLeft = 30;
+    let listenCorrect = 0;
+    let listenWrong = 0;
 
-        let correctAnswer3 = 0;
+    const backgroundMusic = document.getElementById('backgroundMusic');
+    const correctSound = document.getElementById('correctSound');
+    const wrongSound = document.getElementById('wrongSound');
 
-        function speakNumber(text) {
-            const speech = new SpeechSynthesisUtterance(text);
-            speech.lang = 'en-IN';
-            window.speechSynthesis.speak(speech);
+    backgroundMusic.volume = 0.3;
+
+    function showScreen(id) {
+        document.querySelectorAll('.screen').forEach(screen => screen.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
+
+    function startLevel(level) {
+        currentLevel = level;
+        if (level === 1) {
+            showScreen('level1');
+            resetCounting();
+        } else if (level === 2) {
+            showScreen('level2');
+            generateQuizQuestions();
+            showQuestion();
+        } else if (level === 3) {
+            showScreen('level3');
+            startListenQuestion();
         }
+    }
 
-        function startTimer() {
-            let minutes = 3; // Level 2 - 3 minutes time limit
-            let seconds = 0;
-            timer = setInterval(function () {
-                if (seconds === 0) {
-                    if (minutes === 0) {
-                        clearInterval(timer);
-                        alert("समय समाप्त हो गया! आप सही और गलत जवाबों की संख्या जानना चाहेंगे?");
-                        alert("सही जवाब: " + correctAnswers2 + " | गलत जवाब: " + wrongAnswers2);
-                        if (confirm("क्या आप आगे खेलना चाहते हैं?")) {
-                            location.reload(); // Restart the game
-                        }
-                    } else {
-                        minutes--;
-                        seconds = 59;
-                    }
-                } else {
-                    seconds--;
-                }
-                document.getElementById("timer").innerText = `समय: ${minutes}:${seconds < 10 ? "0" + seconds : seconds}`;
-            }, 1000);
-        }
+    function goHome() {
+        clearIntervals();
+        showScreen('main-menu');
+    }
 
-        function nextNumber() {
-            if (currentNumber <= 100) {
-                document.getElementById('numberDisplay').innerText = currentNumber;
-                speakNumber(currentNumber);
-                currentNumber++;
+    function clearIntervals() {
+        clearInterval(countInterval);
+        clearInterval(quizTimer);
+        clearInterval(listenTimer);
+    }
+
+    // Level 1
+    function resetCounting() {
+        count = 1;
+        isPaused = true;
+        document.getElementById('count-display').innerText = "Press Play to Start";
+    }
+
+    function playCounting() {
+        if (!isPaused) return;
+        isPaused = false;
+        countInterval = setInterval(() => {
+            if (count <= 100) {
+                speak(count);
+                document.getElementById('count-display').innerText = count;
+                count++;
             } else {
-                alert("आपने सभी 1 से 100 तक की संख्याएं देख ली हैं!");
+                clearInterval(countInterval);
             }
-        }
+        }, 20000);
+    }
 
-        function goToLevel(lvl) {
-            level = lvl;
-            if (level == 2) {
-                loadLevel2();
-            } else if (level == 3) {
-                loadLevel3();
-            }
-        }
+    function pauseCounting() {
+        isPaused = true;
+        clearInterval(countInterval);
+    }
 
-        // LEVEL 2 - Four Options Question
-        function loadLevel2() {
-            document.getElementById('level-container').style.display = 'none';
-            document.getElementById('level2-container').style.display = 'block';
-            startTimer();
-            nextQuestion();
-        }
+    function speak(text) {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'en-US';
+        speechSynthesis.speak(utterance);
+    }
 
-        function nextQuestion() {
-            correctAnswer2 = Math.floor(Math.random() * 100) + 1;
-            document.getElementById('questionNumber').innerText = "Number: " + correctAnswer2;
-            speakNumber(correctAnswer2);
-
-            let options = [correctAnswer2];
+    // Level 2
+    function generateQuizQuestions() {
+        quizQuestions = [];
+        for (let i = 1; i <= 10; i++) {
+            let correct = Math.floor(Math.random() * 100) + 1;
+            let options = [correct];
             while (options.length < 4) {
-                let wrongOption = Math.floor(Math.random() * 100) + 1;
-                if (!options.includes(wrongOption)) {
-                    options.push(wrongOption);
-                }
+                let wrong = Math.floor(Math.random() * 100) + 1;
+                if (!options.includes(wrong)) options.push(wrong);
             }
-
-            options = shuffleArray(options);
-
-            let optionsHtml = '';
-            for (let opt of options) {
-                optionsHtml += `<button class="option-btn" onclick="checkOption(${opt})">${opt}</button>`;
-            }
-            document.getElementById('optionsContainer').innerHTML = optionsHtml;
+            options = shuffle(options);
+            quizQuestions.push({question: `Find the number: ${correct}`, options, correct});
         }
+        currentQuestionIndex = 0;
+        quizCorrect = 0;
+        quizWrong = 0;
+    }
 
-        function checkOption(selected) {
-            if (selected === correctAnswer2) {
-                correctAnswers2++;
-                playTali();
+    function showQuestion() {
+        if (currentQuestionIndex >= quizQuestions.length) {
+            alert(`Quiz Over! Correct: ${quizCorrect}, Wrong: ${quizWrong}`);
+            goHome();
+            return;
+        }
+        let q = quizQuestions[currentQuestionIndex];
+        document.getElementById('question').innerText = q.question;
+        let optionsHTML = '';
+        q.options.forEach(opt => {
+            optionsHTML += `<button onclick="checkAnswer(${opt})">${opt}</button>`;
+        });
+        document.getElementById('options').innerHTML = optionsHTML;
+        startQuizTimer();
+    }
+
+    function startQuizTimer() {
+        clearInterval(quizTimer);
+        timeLeft = 30;
+        document.getElementById('timer').innerText = `Time Left: ${timeLeft}s`;
+        quizTimer = setInterval(() => {
+            timeLeft--;
+            document.getElementById('timer').innerText = `Time Left: ${timeLeft}s`;
+            if (timeLeft <= 0) {
+                clearInterval(quizTimer);
+                alert('Time Up! Practice Needed.');
+                quizWrong++;
                 nextQuestion();
-            } else {
-                wrongAnswers2++;
-                showErrorMessage();
             }
-        }
+        }, 1000);
+    }
 
-        function playTali() {
-            let tali = document.createElement('div');
-            tali.className = 'tali';
-            tali.innerHTML = "👏👏👏";
-            document.body.appendChild(tali);
-            tali.style.display = 'block';
-            setTimeout(() => {
-                tali.style.display = 'none';
-            }, 2000);
+    function checkAnswer(selected) {
+        clearInterval(quizTimer);
+        if (selected === quizQuestions[currentQuestionIndex].correct) {
+            correctSound.play();
+            speak("Right Answer");
+            quizCorrect++;
+        } else {
+            wrongSound.play();
+            speak("Practice Needed");
+            quizWrong++;
         }
+        setTimeout(nextQuestion, 1000);
+    }
 
-        function showErrorMessage() {
-            document.getElementById('error-msg').style.display = 'block';
-            setTimeout(() => {
-                document.getElementById('error-msg').style.display = 'none';
-            }, 3000);
+    function nextQuestion() {
+        currentQuestionIndex++;
+        showQuestion();
+    }
+
+    function previousQuestion() {
+        if (currentQuestionIndex > 0) {
+            currentQuestionIndex--;
+            showQuestion();
         }
+    }
 
-        function shuffleArray(arr) {
-            for (let i = arr.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [arr[i], arr[j]] = [arr[j], arr[i]];
+    function shuffle(array) {
+        for (let i = array.length -1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    // Level 3
+    function startListenQuestion() {
+        listenNumber = Math.floor(Math.random() * 100) + 1;
+        speak(listenNumber);
+        document.getElementById('listen-question').innerText = `Listen Carefully`;
+        document.getElementById('user-answer').value = "";
+        startListenTimer();
+    }
+
+    function startListenTimer() {
+        clearInterval(listenTimer);
+        listenTimeLeft = 30;
+        document.getElementById('listen-timer').innerText = `Time Left: ${listenTimeLeft}s`;
+        listenTimer = setInterval(() => {
+            listenTimeLeft--;
+            document.getElementById('listen-timer').innerText = `Time Left: ${listenTimeLeft}s`;
+            if (listenTimeLeft <= 0) {
+                clearInterval(listenTimer);
+                alert(`Time Up! Correct: ${listenCorrect}, Wrong: ${listenWrong}`);
+                goHome();
             }
-            return arr;
-        }
+        }, 1000);
+    }
 
-        // LEVEL 3 - Listen and Write
-        function loadLevel3() {
-            document.getElementById('level-container').style.display = 'none';
-            document.getElementById('level2-container').style.display = 'none';
-            document.getElementById('level3-container').style.display = 'block';
-            generateQuestion();
+    function submitAnswer() {
+        clearInterval(listenTimer);
+        let userAns = parseInt(document.getElementById('user-answer').value);
+        if (userAns === listenNumber) {
+            correctSound.play();
+            speak("Good");
+            listenCorrect++;
+        } else {
+            wrongSound.play();
+            speak("Wrong");
+            listenWrong++;
         }
+        setTimeout(nextListen, 1000);
+    }
 
-        function generateQuestion() {
-            correctAnswer3 = Math.floor(Math.random() * 100) + 1;
-            speakNumber(correctAnswer3);
-            document.getElementById('writeQuestion').innerText = "Listen and Type";
-        }
+    function nextListen() {
+        startListenQuestion();
+    }
 
-        function checkAnswer() {
-            let userAnswer = parseInt(document.getElementById('userInput').value);
-            if (userAnswer === correctAnswer3) {
-                correctAnswer();
-            } else {
-                wrongAnswer();
-            }
-            document.getElementById('userInput').value = "";
-        }
-
-        function correctAnswer() {
-            let speech = new SpeechSynthesisUtterance("आपने सही उत्तर दिया है!");
-            window.speechSynthesis.speak(speech);
-            playTali();
-            generateQuestion();
-        }
-
-        function wrongAnswer() {
-            let speech = new SpeechSynthesisUtterance("गलत उत्तर। सही से सुनो और फिर कोशिश करो!");
-            window.speechSynthesis.speak(speech);
-            generateQuestion();
-        }
-
-        function repeatSound() {
-            speakNumber(correctAnswer3);
-        }
-
-        function restart() {
-            location.reload();
-        }
-    </script>
+    function previousListen() {
+        startListenQuestion();
+    }
+</script>
 
 </body>
 </html>
