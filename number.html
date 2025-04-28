@@ -1,82 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Smart Kids: Numbers</title>
-    <style>
-        /* Styling */
-        body {
-            font-family: 'Comic Sans MS', cursive, sans-serif;
-            background: linear-gradient(45deg, #ff9a9e, #fad0c4, #fbc2eb, #a6c1ee);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
-            margin: 0;
-            padding: 0;
-            text-align: center;
-            color: #333;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Kids: Numbers</title>
+  <style>
+    /* General Styling */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-        @keyframes gradientBG {
-            0% {background-position: 0% 50%;}
-            50% {background-position: 100% 50%;}
-            100% {background-position: 0% 50%;}
-        }
+    body {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background: linear-gradient(45deg, #ff9a9e, #fad0c4, #fbc2eb, #a6c1ee);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
 
-        .screen {
-            display: none;
-            padding: 20px;
-        }
+    @keyframes gradientBG {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
+    }
 
-        .screen.active {
-            display: block;
-            animation: fadeIn 1s ease;
-        }
+    .container {
+      flex: 1;
+      padding: 20px;
+      text-align: center;
+    }
 
-        @keyframes fadeIn {
-            from {opacity: 0;}
-            to {opacity: 1;}
-        }
+    .screen {
+      display: none;
+      padding: 20px;
+    }
 
-        button {
-            margin: 10px;
-            padding: 15px 30px;
-            font-size: 18px;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            background: linear-gradient(145deg, #a1c4fd, #c2e9fb);
-            box-shadow: 3px 3px 10px rgba(0,0,0,0.2);
-            transition: transform 0.2s, background 0.3s;
-        }
+    .screen.active {
+      display: block;
+      animation: fadeIn 1s ease;
+    }
 
-        button:hover {
-            transform: scale(1.1);
-            background: linear-gradient(145deg, #c2e9fb, #a1c4fd);
-        }
+    @keyframes fadeIn {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
 
-        #options button {
-            display: block;
-            width: 200px;
-            margin: 10px auto;
-        }
+    button {
+      margin: 10px;
+      padding: 12px 25px;
+      font-size: 18px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      background: linear-gradient(145deg, #a1c4fd, #c2e9fb);
+      box-shadow: 3px 3px 10px rgba(0,0,0,0.2);
+      transition: transform 0.2s, background 0.3s;
+    }
 
-        input[type="text"] {
-            padding: 10px;
-            width: 200px;
-            font-size: 18px;
-            border-radius: 10px;
-            border: 2px solid #ccc;
-        }
+    button:hover {
+      transform: scale(1.08);
+      background: linear-gradient(145deg, #c2e9fb, #a1c4fd);
+    }
 
-        .controls {
-            margin-top: 20px;
-        }
+    #options button {
+      display: block;
+      width: 80%;
+      max-width: 300px;
+      margin: 10px auto;
+    }
 
-        h1, h2 {
-            font-size: 36px;
-            margin-bottom: 20px;
-        }
-    </style>
+    input[type="text"] {
+      padding: 10px;
+      width: 80%;
+      max-width: 300px;
+      font-size: 18px;
+      border-radius: 10px;
+      border: 2px solid #ccc;
+      margin-top: 10px;
+    }
+
+    .controls {
+      margin-top: 20px;
+    }
+
+    h1, h2 {
+      font-size: 30px;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    #bottom-area {
+      text-align: center;
+      padding: 10px;
+    }
+
+    #bottom-area img {
+      width: 100%;
+      max-width: 300px;
+      height: auto;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% {transform: translateY(0);}
+      50% {transform: translateY(-10px);}
+    }
+    
+    /* Responsive Text */
+    @media (max-width: 768px) {
+      h1, h2 {
+        font-size: 24px;
+      }
+      button {
+        font-size: 16px;
+      }
+    }
+  </style>
 </head>
 
 <body>
@@ -86,270 +130,288 @@
 <audio id="correctSound" src="https://cdn.pixabay.com/audio/2022/03/01/audio_42b8495a9d.mp3"></audio>
 <audio id="wrongSound" src="https://cdn.pixabay.com/audio/2022/03/01/audio_87c3ed3edb.mp3"></audio>
 
-<!-- Main Menu -->
-<div id="main-menu" class="screen active">
+<div class="container">
+  
+  <!-- Main Menu -->
+  <div id="main-menu" class="screen active">
     <h1>Smart Kids - Numbers</h1>
     <button onclick="startLevel(1)">Level 1: Counting</button>
     <button onclick="startLevel(2)">Level 2: Quiz</button>
     <button onclick="startLevel(3)">Level 3: Listen & Type</button>
     <button onclick="goHome()">Home</button>
-</div>
+  </div>
 
-<!-- Level 1 -->
-<div id="level1" class="screen">
+  <!-- Level 1 -->
+  <div id="level1" class="screen">
     <h2>Counting 1 to 100</h2>
     <div id="count-display">Press Play to Start</div>
     <div class="controls">
-        <button onclick="pauseCounting()">Pause</button>
-        <button onclick="playCounting()">Play</button>
-        <button onclick="goHome()">Home</button>
+      <button onclick="pauseCounting()">Pause</button>
+      <button onclick="playCounting()">Play</button>
+      <button onclick="goHome()">Home</button>
     </div>
-</div>
+  </div>
 
-<!-- Level 2 -->
-<div id="level2" class="screen">
+  <!-- Level 2 -->
+  <div id="level2" class="screen">
     <h2>Quiz Mode</h2>
     <div id="question"></div>
     <div id="options"></div>
     <div id="timer">Time Left: 30s</div>
     <div class="controls">
-        <button onclick="previousQuestion()">Back</button>
-        <button onclick="nextQuestion()">Next</button>
-        <button onclick="goHome()">Home</button>
+      <button onclick="previousQuestion()">Back</button>
+      <button onclick="nextQuestion()">Next</button>
+      <button onclick="goHome()">Home</button>
     </div>
-</div>
+  </div>
 
-<!-- Level 3 -->
-<div id="level3" class="screen">
+  <!-- Level 3 -->
+  <div id="level3" class="screen">
     <h2>Listen and Type</h2>
     <div id="listen-question">Press Play to Start</div>
     <input type="text" id="user-answer" placeholder="Enter your answer">
     <button onclick="submitAnswer()">Submit</button>
     <div id="listen-timer">Time Left: 30s</div>
     <div class="controls">
-        <button onclick="previousListen()">Back</button>
-        <button onclick="nextListen()">Next</button>
-        <button onclick="goHome()">Home</button>
+      <button onclick="previousListen()">Back</button>
+      <button onclick="nextListen()">Next</button>
+      <button onclick="goHome()">Home</button>
     </div>
+  </div>
+
+</div>
+
+<!-- Bottom area for Cartoon / Ads -->
+<div id="bottom-area">
+  <!-- Cartoon Image -->
+  <img id="cartoon-image" src="https://cdn.pixabay.com/photo/2017/01/31/13/14/animal-2029324_960_720.png" alt="Cartoon Animation">
+
+  <!-- 
+  Future में यहाँ Ad लगाने के लिए cartoon image को हटाकर Ad Code डाल सकते हैं, जैसे:
+
+  <div id="ad-space">
+    AdSense या कोई और Ad Code यहाँ डाल सकते हैं
+  </div>
+  -->
 </div>
 
 <script>
-    /* JavaScript */
-    let currentLevel = 0;
-    let count = 1;
-    let countInterval;
-    let isPaused = false;
-    let quizQuestions = [];
-    let currentQuestionIndex = 0;
-    let quizTimer;
-    let timeLeft = 30;
-    let quizCorrect = 0;
-    let quizWrong = 0;
-    let listenNumber = 0;
-    let listenTimer;
-    let listenTimeLeft = 30;
-    let listenCorrect = 0;
-    let listenWrong = 0;
+  /* JavaScript - Same as Previous with Sound Effects */
+  let currentLevel = 0;
+  let count = 1;
+  let countInterval;
+  let isPaused = false;
+  let quizQuestions = [];
+  let currentQuestionIndex = 0;
+  let quizTimer;
+  let timeLeft = 30;
+  let quizCorrect = 0;
+  let quizWrong = 0;
+  let listenNumber = 0;
+  let listenTimer;
+  let listenTimeLeft = 30;
+  let listenCorrect = 0;
+  let listenWrong = 0;
 
-    const backgroundMusic = document.getElementById('backgroundMusic');
-    const correctSound = document.getElementById('correctSound');
-    const wrongSound = document.getElementById('wrongSound');
+  const backgroundMusic = document.getElementById('backgroundMusic');
+  const correctSound = document.getElementById('correctSound');
+  const wrongSound = document.getElementById('wrongSound');
 
-    backgroundMusic.volume = 0.3;
+  backgroundMusic.volume = 0.3;
 
-    function showScreen(id) {
-        document.querySelectorAll('.screen').forEach(screen => screen.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(screen => screen.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+  }
+
+  function startLevel(level) {
+    currentLevel = level;
+    if (level === 1) {
+      showScreen('level1');
+      resetCounting();
+    } else if (level === 2) {
+      showScreen('level2');
+      generateQuizQuestions();
+      showQuestion();
+    } else if (level === 3) {
+      showScreen('level3');
+      startListenQuestion();
     }
+  }
 
-    function startLevel(level) {
-        currentLevel = level;
-        if (level === 1) {
-            showScreen('level1');
-            resetCounting();
-        } else if (level === 2) {
-            showScreen('level2');
-            generateQuizQuestions();
-            showQuestion();
-        } else if (level === 3) {
-            showScreen('level3');
-            startListenQuestion();
-        }
-    }
+  function goHome() {
+    clearIntervals();
+    showScreen('main-menu');
+  }
 
-    function goHome() {
-        clearIntervals();
-        showScreen('main-menu');
-    }
+  function clearIntervals() {
+    clearInterval(countInterval);
+    clearInterval(quizTimer);
+    clearInterval(listenTimer);
+  }
 
-    function clearIntervals() {
+  // Level 1
+  function resetCounting() {
+    count = 1;
+    isPaused = true;
+    document.getElementById('count-display').innerText = "Press Play to Start";
+  }
+
+  function playCounting() {
+    if (!isPaused) return;
+    isPaused = false;
+    countInterval = setInterval(() => {
+      if (count <= 100) {
+        speak(count);
+        document.getElementById('count-display').innerText = count;
+        count++;
+      } else {
         clearInterval(countInterval);
+      }
+    }, 20000);
+  }
+
+  function pauseCounting() {
+    isPaused = true;
+    clearInterval(countInterval);
+  }
+
+  function speak(text) {
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'en-US';
+    speechSynthesis.speak(utterance);
+  }
+
+  // Level 2
+  function generateQuizQuestions() {
+    quizQuestions = [];
+    for (let i = 1; i <= 10; i++) {
+      let correct = Math.floor(Math.random() * 100) + 1;
+      let options = [correct];
+      while (options.length < 4) {
+        let wrong = Math.floor(Math.random() * 100) + 1;
+        if (!options.includes(wrong)) options.push(wrong);
+      }
+      options = shuffle(options);
+      quizQuestions.push({question: `Find the number: ${correct}`, options, correct});
+    }
+    currentQuestionIndex = 0;
+    quizCorrect = 0;
+    quizWrong = 0;
+  }
+
+  function showQuestion() {
+    if (currentQuestionIndex >= quizQuestions.length) {
+      alert(`Quiz Over! Correct: ${quizCorrect}, Wrong: ${quizWrong}`);
+      goHome();
+      return;
+    }
+    let q = quizQuestions[currentQuestionIndex];
+    document.getElementById('question').innerText = q.question;
+    let optionsHTML = '';
+    q.options.forEach(opt => {
+      optionsHTML += `<button onclick="checkAnswer(${opt})">${opt}</button>`;
+    });
+    document.getElementById('options').innerHTML = optionsHTML;
+    startQuizTimer();
+  }
+
+  function startQuizTimer() {
+    clearInterval(quizTimer);
+    timeLeft = 30;
+    document.getElementById('timer').innerText = `Time Left: ${timeLeft}s`;
+    quizTimer = setInterval(() => {
+      timeLeft--;
+      document.getElementById('timer').innerText = `Time Left: ${timeLeft}s`;
+      if (timeLeft <= 0) {
         clearInterval(quizTimer);
+        alert('Time Up! Practice Needed.');
+        quizWrong++;
+        nextQuestion();
+      }
+    }, 1000);
+  }
+
+  function checkAnswer(selected) {
+    clearInterval(quizTimer);
+    if (selected === quizQuestions[currentQuestionIndex].correct) {
+      correctSound.play();
+      speak("Right Answer");
+      quizCorrect++;
+    } else {
+      wrongSound.play();
+      speak("Practice Needed");
+      quizWrong++;
+    }
+    setTimeout(nextQuestion, 1000);
+  }
+
+  function nextQuestion() {
+    currentQuestionIndex++;
+    showQuestion();
+  }
+
+  function previousQuestion() {
+    if (currentQuestionIndex > 0) {
+      currentQuestionIndex--;
+      showQuestion();
+    }
+  }
+
+  function shuffle(array) {
+    for (let i = array.length -1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  }
+
+  // Level 3
+  function startListenQuestion() {
+    listenNumber = Math.floor(Math.random() * 100) + 1;
+    speak(listenNumber);
+    document.getElementById('listen-question').innerText = `Listen Carefully`;
+    document.getElementById('user-answer').value = "";
+    startListenTimer();
+  }
+
+  function startListenTimer() {
+    clearInterval(listenTimer);
+    listenTimeLeft = 30;
+    document.getElementById('listen-timer').innerText = `Time Left: ${listenTimeLeft}s`;
+    listenTimer = setInterval(() => {
+      listenTimeLeft--;
+      document.getElementById('listen-timer').innerText = `Time Left: ${listenTimeLeft}s`;
+      if (listenTimeLeft <= 0) {
         clearInterval(listenTimer);
-    }
+        alert(`Time Up! Correct: ${listenCorrect}, Wrong: ${listenWrong}`);
+        goHome();
+      }
+    }, 1000);
+  }
 
-    // Level 1
-    function resetCounting() {
-        count = 1;
-        isPaused = true;
-        document.getElementById('count-display').innerText = "Press Play to Start";
+  function submitAnswer() {
+    clearInterval(listenTimer);
+    let userAns = parseInt(document.getElementById('user-answer').value);
+    if (userAns === listenNumber) {
+      correctSound.play();
+      speak("Good");
+      listenCorrect++;
+    } else {
+      wrongSound.play();
+      speak("Wrong");
+      listenWrong++;
     }
+    setTimeout(nextListen, 1000);
+  }
 
-    function playCounting() {
-        if (!isPaused) return;
-        isPaused = false;
-        countInterval = setInterval(() => {
-            if (count <= 100) {
-                speak(count);
-                document.getElementById('count-display').innerText = count;
-                count++;
-            } else {
-                clearInterval(countInterval);
-            }
-        }, 20000);
-    }
+  function nextListen() {
+    startListenQuestion();
+  }
 
-    function pauseCounting() {
-        isPaused = true;
-        clearInterval(countInterval);
-    }
-
-    function speak(text) {
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'en-US';
-        speechSynthesis.speak(utterance);
-    }
-
-    // Level 2
-    function generateQuizQuestions() {
-        quizQuestions = [];
-        for (let i = 1; i <= 10; i++) {
-            let correct = Math.floor(Math.random() * 100) + 1;
-            let options = [correct];
-            while (options.length < 4) {
-                let wrong = Math.floor(Math.random() * 100) + 1;
-                if (!options.includes(wrong)) options.push(wrong);
-            }
-            options = shuffle(options);
-            quizQuestions.push({question: `Find the number: ${correct}`, options, correct});
-        }
-        currentQuestionIndex = 0;
-        quizCorrect = 0;
-        quizWrong = 0;
-    }
-
-    function showQuestion() {
-        if (currentQuestionIndex >= quizQuestions.length) {
-            alert(`Quiz Over! Correct: ${quizCorrect}, Wrong: ${quizWrong}`);
-            goHome();
-            return;
-        }
-        let q = quizQuestions[currentQuestionIndex];
-        document.getElementById('question').innerText = q.question;
-        let optionsHTML = '';
-        q.options.forEach(opt => {
-            optionsHTML += `<button onclick="checkAnswer(${opt})">${opt}</button>`;
-        });
-        document.getElementById('options').innerHTML = optionsHTML;
-        startQuizTimer();
-    }
-
-    function startQuizTimer() {
-        clearInterval(quizTimer);
-        timeLeft = 30;
-        document.getElementById('timer').innerText = `Time Left: ${timeLeft}s`;
-        quizTimer = setInterval(() => {
-            timeLeft--;
-            document.getElementById('timer').innerText = `Time Left: ${timeLeft}s`;
-            if (timeLeft <= 0) {
-                clearInterval(quizTimer);
-                alert('Time Up! Practice Needed.');
-                quizWrong++;
-                nextQuestion();
-            }
-        }, 1000);
-    }
-
-    function checkAnswer(selected) {
-        clearInterval(quizTimer);
-        if (selected === quizQuestions[currentQuestionIndex].correct) {
-            correctSound.play();
-            speak("Right Answer");
-            quizCorrect++;
-        } else {
-            wrongSound.play();
-            speak("Practice Needed");
-            quizWrong++;
-        }
-        setTimeout(nextQuestion, 1000);
-    }
-
-    function nextQuestion() {
-        currentQuestionIndex++;
-        showQuestion();
-    }
-
-    function previousQuestion() {
-        if (currentQuestionIndex > 0) {
-            currentQuestionIndex--;
-            showQuestion();
-        }
-    }
-
-    function shuffle(array) {
-        for (let i = array.length -1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-        }
-        return array;
-    }
-
-    // Level 3
-    function startListenQuestion() {
-        listenNumber = Math.floor(Math.random() * 100) + 1;
-        speak(listenNumber);
-        document.getElementById('listen-question').innerText = `Listen Carefully`;
-        document.getElementById('user-answer').value = "";
-        startListenTimer();
-    }
-
-    function startListenTimer() {
-        clearInterval(listenTimer);
-        listenTimeLeft = 30;
-        document.getElementById('listen-timer').innerText = `Time Left: ${listenTimeLeft}s`;
-        listenTimer = setInterval(() => {
-            listenTimeLeft--;
-            document.getElementById('listen-timer').innerText = `Time Left: ${listenTimeLeft}s`;
-            if (listenTimeLeft <= 0) {
-                clearInterval(listenTimer);
-                alert(`Time Up! Correct: ${listenCorrect}, Wrong: ${listenWrong}`);
-                goHome();
-            }
-        }, 1000);
-    }
-
-    function submitAnswer() {
-        clearInterval(listenTimer);
-        let userAns = parseInt(document.getElementById('user-answer').value);
-        if (userAns === listenNumber) {
-            correctSound.play();
-            speak("Good");
-            listenCorrect++;
-        } else {
-            wrongSound.play();
-            speak("Wrong");
-            listenWrong++;
-        }
-        setTimeout(nextListen, 1000);
-    }
-
-    function nextListen() {
-        startListenQuestion();
-    }
-
-    function previousListen() {
-        startListenQuestion();
-    }
+  function previousListen() {
+    startListenQuestion();
+  }
 </script>
 
 </body>
