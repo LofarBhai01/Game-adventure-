@@ -1,297 +1,269 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="hi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Smart Kids - Numbers</title>
-  <style>
-    /* General Styling */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: 'Arial', sans-serif;
-      background: linear-gradient(45deg, #ff9a9e, #fad0c4, #fbc2eb, #a6c1ee);
-      background-size: 400% 400%;
-      animation: gradientBG 15s ease infinite;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-
-    @keyframes gradientBG {
-      0% {background-position: 0% 50%;}
-      50% {background-position: 100% 50%;}
-      100% {background-position: 0% 50%;}
-    }
-
-    .container {
-      flex: 1;
-      padding: 20px;
-      text-align: center;
-    }
-
-    .screen {
-      display: none;
-      padding: 20px;
-    }
-
-    .screen.active {
-      display: block;
-      animation: fadeIn 1s ease;
-    }
-
-    @keyframes fadeIn {
-      from {opacity: 0;}
-      to {opacity: 1;}
-    }
-
-    button {
-      margin: 10px;
-      padding: 12px 25px;
-      font-size: 18px;
-      font-weight: bold;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: transform 0.2s, background 0.3s;
-    }
-
-    button:hover {
-      transform: scale(1.08);
-    }
-
-    #options button {
-      display: block;
-      width: 80%;
-      max-width: 300px;
-      margin: 10px auto;
-      font-weight: bold;
-    }
-
-    input[type="text"] {
-      padding: 10px;
-      width: 80%;
-      max-width: 300px;
-      font-size: 18px;
-      font-weight: bold;
-      border-radius: 10px;
-      border: 2px solid #ccc;
-      margin-top: 10px;
-    }
-
-    .controls {
-      margin-top: 20px;
-    }
-
-    h1, h2 {
-      font-size: 30px;
-      margin-bottom: 20px;
-      color: #333;
-      font-weight: bold;
-    }
-
-    /* Colorful buttons */
-    .timer-btn {
-      background-color: red;
-      color: white;
-    }
-
-    .play-back-btn {
-      background-color: green;
-      color: white;
-    }
-
-    .home-stop-btn {
-      background-color: red;
-      color: white;
-    }
-
-    /* Animation for cartoon image */
-    #cartoon-image {
-      width: 100%;
-      max-width: 400px;
-      height: auto;
-      animation: float 3s ease-in-out infinite;
-    }
-
-    @keyframes float {
-      0%, 100% {transform: translateY(0);}
-      50% {transform: translateY(-10px);}
-    }
-
-    /* Responsive Design for all devices */
-    @media (max-width: 768px) {
-      h1, h2 {
-        font-size: 24px;
-      }
-
-      button {
-        font-size: 16px;
-      }
-
-      #cartoon-image {
-        width: 80%;
-        max-width: 300px;
-      }
-    }
-
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Kids - Number Game</title>
+<style>
+  body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(to right, #ffecd2, #fcb69f);
+    overflow-x: hidden;
+  }
+  header, footer {
+    text-align: center;
+    padding: 10px;
+  }
+  .container {
+    padding: 20px;
+    text-align: center;
+  }
+  .question, .options, .controls, .timer, .ads-section, .upload-section {
+    margin-top: 20px;
+  }
+  .option {
+    display: inline-block;
+    margin: 10px;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  .timer {
+    font-size: 24px;
+    color: red;
+    font-weight: bold;
+  }
+  .controls button {
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  .play, .back { background-color: green; color: white; }
+  .home, .stop { background-color: red; color: white; }
+  .ads-section, .upload-section {
+    background-color: #ffffffaa;
+    padding: 20px;
+    border-radius: 10px;
+  }
+  .ad-rules {
+    font-size: 16px;
+    margin-top: 10px;
+    color: #333;
+  }
+  #adDisplay {
+    margin-top: 10px;
+    height: 150px;
+    background: #eee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  #cartoon {
+    width: 100%;
+    height: 150px;
+    background-image: url('https://cdn.pixabay.com/photo/2020/05/16/10/44/kid-5179688_960_720.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+</style>
 </head>
-
-<body>
-
-<!-- Background Music and Sound Effects -->
-<audio id="backgroundMusic" src="https://cdn.pixabay.com/audio/2022/03/15/audio_74e749d297.mp3" loop autoplay></audio>
-<audio id="correctSound" src="https://cdn.pixabay.com/audio/2022/03/01/audio_42b8495a9d.mp3"></audio>
-<audio id="wrongSound" src="https://cdn.pixabay.com/audio/2022/03/01/audio_87c3ed3edb.mp3"></audio>
-
-<div class="container">
-  
-  <!-- Main Menu -->
-  <div id="main-menu" class="screen active">
-    <h1>Smart Kids - Numbers</h1>
-    <button onclick="startLevel(1)" class="play-back-btn">Level 1: Counting</button>
-    <button onclick="startLevel(2)" class="play-back-btn">Level 2: Quiz</button>
-    <button onclick="startLevel(3)" class="play-back-btn">Level 3: Listen & Type</button>
-    <button onclick="goHome()" class="home-stop-btn">Home</button>
-  </div>
-
-  <!-- Level 1 -->
-  <div id="level1" class="screen">
-    <h2>Counting 1 to 100</h2>
-    <div id="count-display">Press Play to Start</div>
-    <div class="controls">
-      <button onclick="pauseCounting()" class="play-back-btn">Pause</button>
-      <button onclick="playCounting()" class="play-back-btn">Play</button>
-      <button onclick="goHome()" class="home-stop-btn">Home</button>
+<body><header>
+  <h1>Smart Kids: Number Learning Fun</h1>
+</header><div class="container">
+  <div class="timer" id="timer">Timer: 2:00</div>  <div class="question" id="question">यहाँ प्रश्न दिखाई देगा</div>  <div class="options" id="options">
+    <!-- Options dynamically inserted -->
+  </div>  <div class="controls">
+    <button class="back" onclick="prevQuestion()">Back</button>
+    <button class="play" onclick="nextQuestion()">Next</button>
+    <button class="home" onclick="goHome()">Home</button>
+  </div>  <div class="ads-section">
+    <h2>Ads / Cartoon Section</h2>
+    <div id="adDisplay">
+      <div id="cartoon"></div>
     </div>
-  </div>
-
-  <!-- Level 2 -->
-  <div id="level2" class="screen">
-    <h2>Quiz Mode</h2>
-    <div id="question"></div>
-    <div id="options"></div>
-    <div id="timer" class="timer-btn">Time Left: 30s</div>
-    <div class="controls">
-      <button onclick="previousQuestion()" class="play-back-btn">Back</button>
-      <button onclick="nextQuestion()" class="play-back-btn">Next</button>
-      <button onclick="goHome()" class="home-stop-btn">Home</button>
-    </div>
-  </div>
-
-  <!-- Level 3 -->
-  <div id="level3" class="screen">
-    <h2>Listen and Type</h2>
-    <div id="listen-question">Press Play to Start</div>
-    <input type="text" id="user-answer" placeholder="Enter your answer">
-    <button onclick="submitAnswer()" class="play-back-btn">Submit</button>
-    <div id="listen-timer" class="timer-btn">Time Left: 30s</div>
-    <div class="controls">
-      <button onclick="previousListen()" class="play-back-btn">Back</button>
-      <button onclick="nextListen()" class="play-back-btn">Next</button>
-      <button onclick="goHome()" class="home-stop-btn">Home</button>
-    </div>
-  </div>
-
+  </div>  <div class="upload-section">
+    <h3>Upload Your Ad (Video/Image)</h3>
+    <input type="file" id="ads-file-upload" accept="image/*,video/*">
+    <button onclick="processAds()">Upload Ad</button><div class="ad-rules">
+  <p><strong>Ad Plans:</strong></p>
+  <ul>
+    <li>14 दिन के लिए ₹99</li>
+    <li>30 दिन के लिए ₹149</li>
+    <li>60 दिन के लिए ₹249</li>
+    <li>180 दिन के लिए ₹499</li>
+    <li>364 दिन के लिए ₹999</li>
+  </ul>
+  <p>Terms and Conditions Apply.</p>
 </div>
 
-<!-- Bottom area for Cartoon / Ads -->
-<div id="bottom-area">
-  <!-- Cartoon Image -->
-  <img id="cartoon-image" src="https://cdn.pixabay.com/photo/2017/01/31/13/14/animal-2029324_960_720.png" alt="Cartoon Animation">
-
-  <!-- 
-  Future में यहाँ Ad लगाने के लिए cartoon image को हटाकर Ad Code डाल सकते हैं, जैसे:
-
-  <div id="ad-space">
-    <!-- AdSense Code, Media.net Ad Code या अन्य Ad Network का Code यहाँ डालें -->
   </div>
-  -->
-</div>
+</div><footer>
+  <p>&copy; 2025 Smart Kids</p>
+</footer><script>
+let questions = [];
+let currentQuestionIndex = 0;
+let level = 1;
+let scoreRight = 0, scoreWrong = 0;
+let questionTimer;
+let mainTimer;
 
-<script>
-  /* JavaScript - Same as Previous with Sound Effects */
-  let currentLevel = 0;
-  let count = 1;
-  let countInterval;
-  let isPaused = false;
-  let quizQuestions = [];
-  let currentQuestionIndex = 0;
-  let quizTimer;
-  let timeLeft = 30;
-  let quizCorrect = 0;
-  let quizWrong = 0;
-  let listenNumber = 0;
-  let listenTimer;
-  let listenTimeLeft = 30;
-  let listenCorrect = 0;
-  let listenWrong = 0;
+function generateQuestions() {
+  questions = [];
+  for (let i = 1; i <= 100; i++) {
+    questions.push(i);
+  }
+}
 
-  const backgroundMusic = document.getElementById('backgroundMusic');
-  const correctSound = document.getElementById('correctSound');
-  const wrongSound = document.getElementById('wrongSound');
+generateQuestions();
 
-  backgroundMusic.volume = 0.3;
-
-  function showScreen(id) {
-    document.querySelectorAll('.screen').forEach(screen => screen.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
+function showQuestion() {
+  if (currentQuestionIndex >= questions.length) {
+    clearInterval(mainTimer);
+    clearInterval(questionTimer);
+    alert(`Level Complete!\nRight: ${scoreRight}\nWrong: ${scoreWrong}`);
+    return;
   }
 
-  function startLevel(level) {
-    currentLevel = level;
-    if (level === 1) {
-      showScreen('level1');
-      resetCounting();
-    } else if (level === 2) {
-      showScreen('level2');
-      resetQuiz();
-    } else if (level === 3) {
-      showScreen('level3');
-      startListen();
+  let num = questions[currentQuestionIndex];
+  document.getElementById('question').innerText = `Number: ${num}`;
+
+  let options = [];
+  options.push(num);
+  while (options.length < 4) {
+    let rand = Math.floor(Math.random() * 100) + 1;
+    if (!options.includes(rand)) options.push(rand);
+  }
+  options.sort(() => Math.random() - 0.5);
+
+  document.getElementById('options').innerHTML = '';
+  const colors = ['#FF5733', '#33FF57', '#3357FF', '#F333FF'];
+  options.forEach((opt, idx) => {
+    let btn = document.createElement('div');
+    btn.className = 'option';
+    btn.innerText = opt;
+    btn.style.backgroundColor = colors[idx];
+    btn.onclick = () => checkAnswer(opt, num);
+    document.getElementById('options').appendChild(btn);
+  });
+
+  clearInterval(questionTimer);
+  questionTimer = setTimeout(() => {
+    alert("अभी आपको और अभ्यास करने की ज़रूरत है!");
+    currentQuestionIndex++;
+    showQuestion();
+  }, 30000);
+
+  speak(num);
+}
+
+function checkAnswer(selected, correct) {
+  clearTimeout(questionTimer);
+  if (selected === correct) {
+    alert("Right Answer!");
+    scoreRight++;
+    currentQuestionIndex++;
+    showQuestion();
+  } else {
+    alert("Wrong Answer!");
+    scoreWrong++;
+  }
+}
+
+function startMainTimer() {
+  let totalTime = 120;
+  mainTimer = setInterval(() => {
+    let minutes = Math.floor(totalTime / 60);
+    let seconds = totalTime % 60;
+    document.getElementById('timer').innerText = `Timer: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    totalTime--;
+    if (totalTime < 0) {
+      clearInterval(mainTimer);
+      clearInterval(questionTimer);
+      alert(`Time Over!\nRight: ${scoreRight}\nWrong: ${scoreWrong}`);
     }
-  }
+  }, 1000);
+}
 
-  function goHome() {
-    showScreen('main-menu');
-  }
+function nextQuestion() {
+  currentQuestionIndex++;
+  showQuestion();
+}
 
-  // Level 1: Counting
-  function startCounting() {
-    clearInterval(countInterval);
-    countInterval = setInterval(function() {
-      if (count <= 100) {
-        document.getElementById('count-display').innerHTML = count;
-        let numberAudio = new Audio(`https://example.com/audio/numbers/${count}.mp3`);
-        numberAudio.play();
-        count++;
-      } else {
-        clearInterval(countInterval);
-        document.getElementById('count-display').innerHTML = "Counting Finished!";
-      }
-    }, 4000); // 4-second gap between each number
+function prevQuestion() {
+  if (currentQuestionIndex > 0) {
+    currentQuestionIndex--;
+    showQuestion();
   }
+}
 
-  function playCounting() {
-    if (isPaused) {
-      isPaused = false;
-      startCounting();
+function goHome() {
+  window.location.href = 'index.html';
+}
+
+function speak(text) {
+  let utter = new SpeechSynthesisUtterance(text);
+  utter.lang = 'hi-IN';
+  window.speechSynthesis.speak(utter);
+}
+
+function processAds() {
+  const fileInput = document.getElementById('ads-file-upload');
+  if (fileInput.files.length > 0) {
+    const file = fileInput.files[0];
+
+    if (file.type.startsWith('video/')) {
+      const video = document.createElement('video');
+      video.preload = 'metadata';
+      video.onloadedmetadata = function() {
+        window.URL.revokeObjectURL(video.src);
+        if (video.duration > 59) {
+          alert("Video must be under 59 seconds!");
+          fileInput.value = "";
+        } else {
+          displayAd(file);
+        }
+      };
+      video.src = URL.createObjectURL(file);
+    } else {
+      displayAd(file);
     }
+  } else {
+    alert("Please upload an ad file!");
   }
+}
 
-  function pauseCounting() {
-    isPaused = true;
-    clearInterval(countInterval);
+function displayAd(file) {
+  const adDisplay = document.getElementById('adDisplay');
+  adDisplay.innerHTML = '';
+  if (file.type.startsWith('image/')) {
+    const img = document.createElement('img');
+    img.src = URL.createObjectURL(file);
+    img.style.width = '100%';
+    img.style.height = '100%';
+    img.style.objectFit = 'cover';
+    adDisplay.appendChild(img);
+  } else if (file.type.startsWith('video/')) {
+    const video = document.createElement('video');
+    video.src = URL.createObjectURL(file);
+    video.controls = true;
+    video.style.width = '100%';
+    video.style.height = '100%';
+    adDisplay.appendChild(video);
   }
+}
 
-  // Add more levels for Quiz and Listen and Type similarly
-</script>
-
-</body>
+window.onload = function() {
+  startMainTimer();
+  showQuestion();
+};
+</script></body>
 </html>
