@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,203 +8,191 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
+            background-color: #f0f8ff;
             text-align: center;
-        }
-        button {
-            padding: 10px 20px;
-            font-size: 18px;
-            margin: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .play-btn {
-            background-color: green;
-            color: white;
-        }
-        .pause-btn {
-            background-color: brown;
-            color: white;
-        }
-        .back-btn {
-            background-color: red;
-            color: white;
-        }
-        .next-btn {
-            background-color: blue;
-            color: white;
-        }
-        .direct-level-btn {
-            background-color: orange;
-            color: white;
-        }
-        .level-section {
-            margin-top: 20px;
-        }
-        .ads-section {
-            margin-top: 30px;
             padding: 20px;
-            background-color: #333;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            font-size: 20px;
+            border-radius: 8px;
+            margin: 10px;
+            cursor: pointer;
+            border: none;
+        }
+
+        .green {
+            background-color: #4CAF50;
             color: white;
-            border-radius: 10px;
         }
-        .ads-upload-section {
+
+        .red {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .brown {
+            background-color: #795548;
+            color: white;
+        }
+
+        .blue {
+            background-color: #2196F3;
+            color: white;
+        }
+
+        .level-button {
+            background-color: #4CAF50;
+            padding: 15px 30px;
+            font-size: 20px;
+            margin: 10px;
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+        }
+
+        .level-button:hover {
+            background-color: #45a049;
+        }
+
+        .ads-section {
             margin-top: 20px;
+            border-top: 2px solid #ccc;
+            padding-top: 20px;
         }
-        .audio-section {
-            margin-top: 20px;
-        }
-        .audio-section select {
-            padding: 5px;
-            font-size: 16px;
-        }
-        .audio-control {
-            margin-top: 20px;
-        }
-        .audio-control button {
-            font-size: 16px;
-            padding: 10px;
-            margin: 5px;
+
+        .ads-section img {
+            max-width: 100%;
+            height: auto;
         }
     </style>
 </head>
 <body>
-    <h1>Number Game - Level 1: Counting</h1>
 
-    <!-- Language selection for audio -->
-    <div class="audio-section">
-        <label for="language">Select Language for Audio:</label>
-        <select id="language">
-            <option value="english">English</option>
-            <option value="hindi">Hindi</option>
-        </select>
-    </div>
+<h1>Welcome to Number Game</h1>
 
-    <!-- Level Selection -->
-    <div class="level-section">
-        <button class="direct-level-btn" onclick="goToLevel(1)">Go to Level 1: Counting</button>
-        <button class="direct-level-btn" onclick="goToLevel(2)">Go to Level 2: Quiz</button>
-        <button class="direct-level-btn" onclick="goToLevel(3)">Go to Level 3: Input</button>
-    </div>
+<!-- Level Selection Screen -->
+<div id="level-selection">
+    <h2>Select Level to Start</h2>
+    <button class="level-button" onclick="goToLevel(1)">Start Level 1</button>
+    <button class="level-button" onclick="goToLevel(2)">Start Level 2</button>
+    <button class="level-button" onclick="goToLevel(3)">Start Level 3</button>
+</div>
 
-    <!-- Counting Section -->
-    <div id="counting-section" style="display: none;">
-        <button class="play-btn" onclick="startCounting()">Play</button>
-        <button class="pause-btn" onclick="pauseCounting()">Pause</button>
-        <button class="back-btn" onclick="goBack()">Back</button>
-    </div>
-
+<!-- Level 1: Counting -->
+<div id="level1" style="display:none;">
+    <h2>Level 1: Counting</h2>
+    <p id="counting-text"></p>
+    <button class="btn green" onclick="startCounting()">Start Counting</button>
+    <button class="btn brown" onclick="pauseCounting()">Pause</button>
+    <button class="btn red" onclick="goBack()">Back</button>
+    <button class="btn blue" onclick="goToNextLevel(2)">Next Level</button>
     <div class="ads-section">
-        <h2>Ads Section</h2>
-        <div class="ads-upload-section">
-            <input type="file" id="ads-file" accept="image/*,video/*">
-            <button onclick="uploadAds()">Upload Ads</button>
-        </div>
-        <div id="uploaded-ads"></div>
+        <h3>Advertisement Section</h3>
+        <img src="https://via.placeholder.com/300x150" alt="Advertisement">
     </div>
+</div>
 
-    <div class="audio-control">
-        <button onclick="playAudio()">Play Audio</button>
-        <button onclick="stopAudio()">Stop Audio</button>
+<!-- Level 2: Quiz -->
+<div id="level2" style="display:none;">
+    <h2>Level 2: Quiz</h2>
+    <p id="question-text"></p>
+    <button class="btn green" onclick="answerQuestion(1)">Option 1</button>
+    <button class="btn green" onclick="answerQuestion(2)">Option 2</button>
+    <button class="btn green" onclick="answerQuestion(3)">Option 3</button>
+    <button class="btn green" onclick="answerQuestion(4)">Option 4</button>
+    <button class="btn red" onclick="goBack()">Back</button>
+    <button class="btn blue" onclick="goToNextLevel(3)">Next Level</button>
+    <div class="ads-section">
+        <h3>Advertisement Section</h3>
+        <img src="https://via.placeholder.com/300x150" alt="Advertisement">
     </div>
+</div>
 
-    <script>
-        // Global Variables
-        let countingInterval;
-        let currentNumber = 1;
-        let language = document.getElementById('language').value;
-        let audio;
-        let levelCompleted = false;
+<!-- Level 3: Input Mode -->
+<div id="level3" style="display:none;">
+    <h2>Level 3: Input Mode</h2>
+    <p id="input-question"></p>
+    <input type="text" id="user-input">
+    <button class="btn green" onclick="submitAnswer()">Submit</button>
+    <button class="btn red" onclick="goBack()">Back</button>
+    <div class="ads-section">
+        <h3>Advertisement Section</h3>
+        <img src="https://via.placeholder.com/300x150" alt="Advertisement">
+    </div>
+</div>
 
-        // Language change event
-        document.getElementById('language').addEventListener('change', function() {
-            language = this.value;
-        });
+<script>
+    let currentLevel = 0;
 
-        // Go to specific level
-        function goToLevel(level) {
-            if (level === 1) {
-                document.getElementById("counting-section").style.display = "block"; // Show counting
-                // Add other level sections if necessary
-            } else if (level === 2) {
-                // Show Level 2
-                alert("You are going to Level 2: Quiz");
-            } else if (level === 3) {
-                // Show Level 3
-                alert("You are going to Level 3: Input Mode");
-            }
+    // Go to the selected level
+    function goToLevel(level) {
+        currentLevel = level;
+        showLevel(level);
+    }
+
+    // Show specific level
+    function showLevel(level) {
+        document.getElementById("level-selection").style.display = "none";
+        if (level === 1) {
+            document.getElementById("level1").style.display = "block";
+        } else if (level === 2) {
+            document.getElementById("level2").style.display = "block";
+        } else if (level === 3) {
+            document.getElementById("level3").style.display = "block";
         }
+    }
 
-        // Start counting from 1 to 100
-        function startCounting() {
-            levelCompleted = false;
-            countingInterval = setInterval(() => {
-                if (currentNumber <= 100) {
-                    speakNumber(currentNumber);
-                    currentNumber++;
-                } else {
-                    clearInterval(countingInterval);
-                    levelCompleted = true;
-                    alert("Level 1 Completed!");
-                    // You can show "Next Level" option or auto go to next level
-                }
-            }, 2000);  // 2 seconds gap
+    // Go back to the level selection screen
+    function goBack() {
+        showLevelSelection();
+    }
+
+    // Show Level Selection Screen
+    function showLevelSelection() {
+        document.getElementById("level-selection").style.display = "block";
+        document.getElementById("level1").style.display = "none";
+        document.getElementById("level2").style.display = "none";
+        document.getElementById("level3").style.display = "none";
+    }
+
+    // Level 1: Counting logic
+    function startCounting() {
+        document.getElementById("counting-text").innerText = "Counting: 1, 2, 3..."; // Logic for counting
+    }
+
+    function pauseCounting() {
+        // Logic to pause counting
+    }
+
+    // Level 2: Quiz logic
+    function answerQuestion(option) {
+        if (option === 1) {
+            alert("Correct Answer!");
+            goToNextLevel(3);
+        } else {
+            alert("Wrong Answer! Try Again.");
         }
+    }
 
-        // Pause counting
-        function pauseCounting() {
-            clearInterval(countingInterval);
+    // Level 3: Input Mode logic
+    function submitAnswer() {
+        const userAnswer = document.getElementById("user-input").value;
+        if (userAnswer === "correct") {
+            alert("Correct Answer!");
+            goToNextLevel(3);
+        } else {
+            alert("Wrong Answer! Try Again.");
         }
+    }
 
-        // Go back to the main interface
-        function goBack() {
-            window.location.href = "index.html";  // Go to your homepage
-        }
+    // Go to next level (Level 2 or Level 3)
+    function goToNextLevel(level) {
+        currentLevel = level;
+        showLevel(level);
+    }
+</script>
 
-        // Speak the number based on selected language
-        function speakNumber(number) {
-            let msg = new SpeechSynthesisUtterance(number);
-            if (language === 'hindi') {
-                msg.lang = 'hi-IN';
-            } else {
-                msg.lang = 'en-US';
-            }
-            speechSynthesis.speak(msg);
-        }
-
-        // Audio play function
-        function playAudio() {
-            audio = new Audio('path_to_your_audio_file.mp3');
-            audio.play();
-        }
-
-        // Stop audio function
-        function stopAudio() {
-            if (audio) {
-                audio.pause();
-                audio.currentTime = 0;
-            }
-        }
-
-        // Ads file upload function
-        function uploadAds() {
-            let file = document.getElementById('ads-file').files[0];
-            if (file) {
-                let fileType = file.type.split('/')[0];
-                let fileReader = new FileReader();
-                
-                fileReader.onload = function(e) {
-                    let uploadedAdsDiv = document.getElementById('uploaded-ads');
-                    if (fileType === 'image') {
-                        uploadedAdsDiv.innerHTML = `<img src="${e.target.result}" width="100%" height="auto">`;
-                    } else if (fileType === 'video') {
-                        uploadedAdsDiv.innerHTML = `<video controls width="100%" height="auto"><source src="${e.target.result}" type="${file.type}"></video>`;
-                    }
-                };
-
-                fileReader.readAsDataURL(file);
-            }
-        }
-    </script>
 </body>
 </html>
