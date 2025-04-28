@@ -27,6 +27,7 @@
             display: flex;
             justify-content: space-evenly;
             margin-bottom: 30px;
+            flex-wrap: wrap;
         }
         .level-buttons button {
             padding: 10px 20px;
@@ -36,6 +37,7 @@
             color: white;
             border: none;
             border-radius: 5px;
+            margin: 10px;
         }
         .level-buttons button:hover {
             background-color: #45a049;
@@ -70,6 +72,17 @@
         .speak-again-btn:hover {
             background-color: #e53935;
         }
+
+        /* Media Queries for responsiveness */
+        @media (max-width: 768px) {
+            .level-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            .ads-section {
+                font-size: 14px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -79,8 +92,15 @@
         <h1>Welcome to the Number Game</h1>
     </div>
 
+    <!-- Age Verification -->
+    <div id="ageVerification" style="text-align: center;">
+        <label for="age">Please enter your age: </label>
+        <input type="number" id="age" min="1" max="100">
+        <button onclick="verifyAge()">Submit</button>
+    </div>
+
     <!-- Level Selection Buttons -->
-    <div class="level-buttons">
+    <div class="level-buttons" id="levelButtons" style="display: none;">
         <button onclick="startLevel('level1')">Start Level 1</button>
         <button onclick="startLevel('level2')">Start Level 2 (Quiz)</button>
         <button onclick="startLevel('level3')">Start Level 3 (Write)</button>
@@ -106,24 +126,36 @@
 <script>
     let level = '';
     let questionIndex = 0;
+    let userAge = 0;
 
+    // Age verification
+    function verifyAge() {
+        userAge = parseInt(document.getElementById("age").value);
+        if (userAge <= 7) {
+            alert("You will start from Level 1!");
+            document.getElementById("levelButtons").style.display = 'block';
+            document.getElementById("ageVerification").style.display = 'none';
+        } else {
+            alert("You can choose any level!");
+            document.getElementById("levelButtons").style.display = 'block';
+            document.getElementById("ageVerification").style.display = 'none';
+        }
+    }
+
+    // Start the game level based on user selection
     function startLevel(levelName) {
         level = levelName;
-        // Hide speak again button initially
-        document.getElementById('speak-again-container').style.display = 'none';
         console.log("Starting " + levelName);
 
         if (level === 'level2') {
-            // Display Quiz questions
             showQuizQuestion();
         } else if (level === 'level3') {
-            // Start writing level with speech
             startWriteLevel();
         }
     }
 
+    // Level 2: Show Quiz Question
     function showQuizQuestion() {
-        // Example question for quiz level
         const questions = [
             { question: "What is 2 + 2?", options: ['4', '5', '6', '7'], correct: '4' },
             { question: "What is 3 + 5?", options: ['7', '8', '9', '10'], correct: '8' },
@@ -155,18 +187,17 @@
         });
     }
 
+    // Level 3: Start Write Level
     function startWriteLevel() {
-        // Example speech for level 3
         const speechText = "Please write the number three";
         alert(speechText);
-
-        // Add Speak Again Button
         document.getElementById('speak-again-container').style.display = 'block';
     }
 
+    // Function to speak the question again
     function speakQuestion() {
-        // Speak the current question or instruction again
-        alert("Please write the number three");
+        const speechText = "Please write the number three";
+        alert(speechText);
     }
 </script>
 
