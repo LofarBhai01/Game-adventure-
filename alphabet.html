@@ -1,219 +1,192 @@
-
-<!DOCTYPE html>
-<html lang="hi">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Alphabet Quiz Game</title>
+  <title>Alphabet Quiz</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #f0f8ff;
       text-align: center;
-      padding: 20px;
+      background: linear-gradient(45deg, #f3ec78, #af4261);
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      color: white;
     }
-    #quiz-container {
-      max-width: 600px;
-      margin: auto;
-      background-color: #ffffff;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    .question {
+      font-size: 3rem;
+      margin-top: 50px;
     }
-    #question {
-      font-size: 24px;
-      margin-bottom: 20px;
+    .options {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin: 30px 0;
     }
     .option {
-      display: block;
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      font-size: 18px;
+      background: linear-gradient(135deg, #89f7fe, #66a6ff);
+      margin: 10px;
+      padding: 20px 40px;
+      border-radius: 20px;
+      font-size: 2rem;
       cursor: pointer;
-      border: 2px solid #ccc;
-      border-radius: 5px;
-      background-color: #f9f9f9;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+      transition: transform 0.2s;
     }
-    .option.correct {
-      background-color: #d4edda;
-      border-color: #28a745;
-      color: #155724;
+    .option:hover {
+      transform: scale(1.1);
     }
-    .option.incorrect {
-      background-color: #f8d7da;
-      border-color: #dc3545;
-      color: #721c24;
-    }
-    #feedback {
-      font-size: 20px;
-      margin-top: 20px;
-      height: 30px;
-    }
-    #timer {
-      font-size: 18px;
-      margin-bottom: 20px;
-    }
-    #controls {
+    .controls {
       margin-top: 20px;
     }
-    #controls button {
+    button {
+      margin: 10px;
       padding: 10px 20px;
-      margin: 0 10px;
-      font-size: 16px;
+      font-size: 1.5rem;
+      border: none;
+      border-radius: 10px;
+      background: #00c6ff;
+      background: linear-gradient(45deg, #00c6ff, #0072ff);
+      color: white;
       cursor: pointer;
+      box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+    }
+    button:hover {
+      transform: scale(1.1);
+    }
+    #timer, #message, #breakMessage {
+      font-size: 2rem;
+      margin: 20px;
     }
   </style>
 </head>
-<body>
-  <div id="quiz-container">
-    <h1>Alphabet Quiz Game</h1>
-    <div id="timer">समय बचा है: <span id="time">60</span> सेकंड</div>
-    <div id="question">प्रश्न यहाँ दिखाई देगा</div>
-    <div id="options"></div>
-    <div id="feedback"></div>
-    <div id="controls">
-      <button onclick="previousQuestion()">पिछला</button>
-      <button onclick="nextQuestion()">अगला</button>
-      <button onclick="goHome()">होम</button>
-    </div>
+<body><div id="levelChoice">
+  <h1>Choose Level</h1>
+  <button onclick="startLevel(1)">Level 1 (A-Z)</button>
+  <button onclick="startLevel(2)">Level 2 (Random)</button>
+</div><div id="quiz" style="display:none;">
+  <div id="timer"></div>
+  <div id="question" class="question"></div>
+  <div id="options" class="options"></div>
+  <div id="message"></div>
+  <div class="controls">
+    <button onclick="prevQuestion()">Back</button>
+    <button onclick="nextQuestion()">Next</button>
+    <button onclick="goHome()">Home</button>
   </div>
-  <script>
-    const questions = [
-      { letter: 'A', answer: 'Apple', options: ['Apple', 'Ball', 'Cat', 'Dog'] },
-      { letter: 'B', answer: 'Ball', options: ['Ball', 'Apple', 'Cat', 'Dog'] },
-      { letter: 'C', answer: 'Cat', options: ['Cat', 'Apple', 'Ball', 'Dog'] },
-      { letter: 'D', answer: 'Dog', options: ['Dog', 'Apple', 'Ball', 'Cat'] },
-      { letter: 'E', answer: 'Elephant', options: ['Elephant', 'Apple', 'Ball', 'Cat'] },
-      { letter: 'F', answer: 'Fish', options: ['Fish', 'Apple', 'Ball', 'Cat'] },
-      { letter: 'G', answer: 'Grapes', options: ['Grapes', 'Apple', 'Ball', 'Cat'] },
-      { letter: 'H', answer: 'Hat', options: ['Hat', 'Apple', 'Ball', 'Cat'] },
-      { letter: 'I', answer: 'Ice Cream', options: ['Ice Cream', 'Apple', 'Ball', 'Cat'] },
-      { letter: 'J', answer: 'Jug', options: ['Jug', 'Apple', 'Ball', 'Cat'] },
-      { letter: 'K', answer: 'Kite', options: ['Kite', 'Apple', 'Ball', 'Cat'] },
-      { letter: 'L', answer: 'Lion', options: ['Lion', 'Apple', 'Ball', 'Cat'] },
-      { letter: 'M', answer: 'Monkey', options: ['Monkey', 'Apple', 'Ball', 'Cat'] },
-      { letter: 'N', answer: 'Nest', options: ['Nest', 'Apple', 'Ball', 'Cat'] },
-      { letter: 'O', answer: 'Orange', options: ['Orange', 'Apple', 'Ball', 'Cat'] },
-      { letter: 'P', answer: 'Parrot', options: ['Parrot', 'Apple', 'Ball', 'Cat'] },
-      { letter: 'Q', answer: 'Queen', options: ['Queen', 'Apple', 'Ball', 'Cat'] },
-      { letter: 'R', answer: 'Rabbit', options: ['Rabbit', 'Apple', 'Ball', 'Cat'] },
-      { letter: 'S', answer: 'Sun', options: ['Sun', 'Apple', 'Ball', 'Cat'] },
-      { letter: 'T', answer: 'Tiger', options: ['Tiger', 'Apple', 'Ball', 'Cat'] },
-      { letter: 'U', answer: 'Umbrella', options: ['Umbrella', 'Apple', 'Ball', 'Cat'] },
-      { letter: 'V', answer: 'Van', options: ['Van', 'Apple', 'Ball', 'Cat'] },
-      { letter: 'W', answer: 'Watch', options: ['Watch', 'Apple', 'Ball', 'Cat'] },
-      { letter: 'X', answer: 'Xylophone', options: ['Xylophone', 'Apple', 'Ball', 'Cat'] },
-      { letter: 'Y', answer: 'Yacht', options: ['Yacht', 'Apple', 'Ball', 'Cat'] },
-      { letter: 'Z', answer: 'Zebra', options: ['Zebra', 'Apple', 'Ball', 'Cat'] }
-    ];
+</div><div id="breakScreen" style="display:none;">
+  <div id="breakMessage"></div>
+</div><script>
+const alphabets = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+let questions = [];
+let currentQuestion = 0;
+let timer;
+let questionStartTime;
+let playTimeStart;
+let level = 1;
 
-    let currentQuestionIndex = 0;
-    let score = 0;
-    let timer;
-    let timeLeft = 60;
+function startLevel(selectedLevel) {
+  level = selectedLevel;
+  if (level === 1) {
+    questions = [...alphabets];
+  } else {
+    questions = [...alphabets].sort(() => Math.random() - 0.5);
+  }
+  playTimeStart = Date.now();
+  document.getElementById('levelChoice').style.display = 'none';
+  document.getElementById('quiz').style.display = 'block';
+  loadQuestion();
+}
 
-    function shuffleArray(array) {
-      for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-      }
-      return array;
-    }
+function loadQuestion() {
+  clearInterval(timer);
+  if (currentQuestion >= questions.length) {
+    currentQuestion = 0;
+  }
 
-    function startTimer() {
+  if (((Date.now() - playTimeStart) / 1000) >= 300) {
+    startBreak();
+    return;
+  }
+
+  document.getElementById('message').innerText = '';
+  document.getElementById('question').innerText = questions[currentQuestion];
+  const correctAnswer = questions[currentQuestion];
+  const options = generateOptions(correctAnswer);
+  document.getElementById('options').innerHTML = '';
+  options.forEach(opt => {
+    const btn = document.createElement('div');
+    btn.className = 'option';
+    btn.innerText = opt;
+    btn.onclick = () => selectOption(opt, correctAnswer);
+    document.getElementById('options').appendChild(btn);
+  });
+
+  questionStartTime = Date.now();
+  startTimer();
+}
+
+function generateOptions(correct) {
+  let opts = [correct];
+  while (opts.length < 4) {
+    let random = alphabets[Math.floor(Math.random() * alphabets.length)];
+    if (!opts.includes(random)) opts.push(random);
+  }
+  return opts.sort(() => Math.random() - 0.5);
+}
+
+function selectOption(selected, correct) {
+  clearInterval(timer);
+  const timeTaken = (Date.now() - questionStartTime) / 1000;
+  if (timeTaken > 60) {
+    document.getElementById('message').innerText = 'आपने ज्यादा समय लिया है, आपको और मेहनत करने की जरूरत है!';
+  } else if (selected === correct) {
+    document.getElementById('message').innerText = 'Good Job! सही उत्तर!';
+    setTimeout(() => {
+      nextQuestion();
+    }, 1000);
+  } else {
+    document.getElementById('message').innerText = 'गलत उत्तर! कोशिश करते रहो!';
+  }
+}
+
+function startTimer() {
+  let timeLeft = 60;
+  document.getElementById('timer').innerText = `Time Left: ${timeLeft} sec`;
+  timer = setInterval(() => {
+    timeLeft--;
+    document.getElementById('timer').innerText = `Time Left: ${timeLeft} sec`;
+    if (timeLeft <= 0) {
       clearInterval(timer);
-      timeLeft = 60;
-      document.getElementById('time').textContent = timeLeft;
-      timer = setInterval(() => {
-        timeLeft--;
-        document.getElementById('time').textContent = timeLeft;
-        if (timeLeft <= 0) {
-          clearInterval(timer);
-          document.getElementById('feedback').textContent = "समय समाप्त!";
-          disableOptions();
-        }
-      }, 1000);
+      document.getElementById('message').innerText = 'समय समाप्त! आपको और मेहनत करनी होगी!';
     }
+  }, 1000);
+}
 
-    function loadQuestion() {
-      const questionObj = questions[currentQuestionIndex];
-      document.getElementById('question').textContent = `${questionObj.letter} से क्या बनता है?`;
-      const optionsContainer = document.getElementById('options');
-      optionsContainer.innerHTML = '';
-      const shuffledOptions = shuffleArray([...questionObj.options]);
-      shuffledOptions.forEach(option => {
-        const button = document.createElement('button');
-        button.textContent = option;
-        button.className = 'option';
-        button.onclick = () => checkAnswer(button, questionObj.answer);
-        optionsContainer.appendChild(button);
-      });
-      document.getElementById('feedback').textContent = '';
-      startTimer();
-    }
+function nextQuestion() {
+  currentQuestion++;
+  loadQuestion();
+}
 
-    function checkAnswer(button, correctAnswer) {
-      clearInterval(timer);
-      const options = document.querySelectorAll('.option');
-      options.forEach(opt => opt.disabled = true);
-      if (button.textContent === correctAnswer) {
-        button.classList.add('correct');
-        document.getElementById('feedback').textContent = 'सही उत्तर!';
-        score++;
-      } else {
-        button.classList.add('incorrect');
-        document.getElementById('feedback').textContent = 'गलत उत्तर!';
-        options.forEach(opt => {
-          if (opt.textContent === correctAnswer) {
-            opt.classList.add('correct');
-          }
-        });
-      }
-    }
-
-    function nextQuestion() {
-      if (currentQuestionIndex < questions.length - 1) {
-        currentQuestionIndex++;
-        loadQuestion();
-      } else {
-        showScore();
-      }
-    }
-
-    function previousQuestion() {
-      if (currentQuestionIndex > 0) {
-        currentQuestionIndex--;
-        loadQuestion();
-      }
-    }
-
-    function goHome() {
-      currentQuestionIndex = 0;
-      score = 0;
-      loadQuestion();
-    }
-
-    function disableOptions() {
-      const options = document.querySelectorAll('.option');
-      options.forEach(opt => opt.disabled = true);
-    }
-
-    function showScore() {
-      document.getElementById('quiz-container').innerHTML = `
-        <h2>आपका स्कोर: ${score} / ${questions.length}</h2>
-        <button onclick="restartQuiz()">पुनः प्रारंभ करें</button>
-      `;
-    }
-
-    function restartQuiz() {
-      currentQuestionIndex = 0;
-      score = 0;
-      location.reload();
-    }
-
-    // प्रारंभ में पहला प्रश्न लोड करें
+function prevQuestion() {
+  if (currentQuestion > 0) {
+    currentQuestion--;
     loadQuestion();
-  </script>
-</body>
+  }
+}
+
+function goHome() {
+  location.href = 'index.html';
+}
+
+function startBreak() {
+  document.getElementById('quiz').style.display = 'none';
+  document.getElementById('breakScreen').style.display = 'block';
+  document.getElementById('breakMessage').innerText = 'अभी ब्रेक का समय है! 1 मिनट बाद फिर मिलते हैं!';
+  setTimeout(() => {
+    document.getElementById('breakScreen').style.display = 'none';
+    document.getElementById('levelChoice').style.display = 'block';
+  }, 60000);
+}
+</script></body>
 </html>
