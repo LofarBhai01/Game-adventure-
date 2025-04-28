@@ -37,6 +37,9 @@
             background-color: orange;
             color: white;
         }
+        .level-section {
+            margin-top: 20px;
+        }
         .ads-section {
             margin-top: 30px;
             padding: 20px;
@@ -46,16 +49,6 @@
         }
         .ads-upload-section {
             margin-top: 20px;
-        }
-        .ads-upload-section input {
-            margin: 10px;
-        }
-        .ads-pricing {
-            margin-top: 20px;
-            font-size: 18px;
-        }
-        .ads-pricing p {
-            margin: 5px 0;
         }
         .audio-section {
             margin-top: 20px;
@@ -86,8 +79,15 @@
         </select>
     </div>
 
+    <!-- Level Selection -->
+    <div class="level-section">
+        <button class="direct-level-btn" onclick="goToLevel(1)">Go to Level 1: Counting</button>
+        <button class="direct-level-btn" onclick="goToLevel(2)">Go to Level 2: Quiz</button>
+        <button class="direct-level-btn" onclick="goToLevel(3)">Go to Level 3: Input</button>
+    </div>
+
     <!-- Counting Section -->
-    <div id="counting-section">
+    <div id="counting-section" style="display: none;">
         <button class="play-btn" onclick="startCounting()">Play</button>
         <button class="pause-btn" onclick="pauseCounting()">Pause</button>
         <button class="back-btn" onclick="goBack()">Back</button>
@@ -102,31 +102,9 @@
         <div id="uploaded-ads"></div>
     </div>
 
-    <div class="ads-pricing">
-        <h3>Ad Pricing Plans</h3>
-        <p>14 days: ₹99</p>
-        <p>30 days: ₹149</p>
-        <p>60 days: ₹249</p>
-        <p>180 days: ₹499</p>
-        <p>364 days: ₹999</p>
-        <p><strong>Terms and conditions apply.</strong></p>
-    </div>
-
     <div class="audio-control">
         <button onclick="playAudio()">Play Audio</button>
         <button onclick="stopAudio()">Stop Audio</button>
-    </div>
-
-    <!-- Direct Level Selection -->
-    <div id="direct-level-section" style="display: none;">
-        <h3>Choose Direct Level</h3>
-        <button class="direct-level-btn" onclick="goToLevel(1)">Go to Level 1</button>
-        <button class="direct-level-btn" onclick="goToLevel(2)">Go to Level 2</button>
-        <button class="direct-level-btn" onclick="goToLevel(3)">Go to Level 3</button>
-    </div>
-
-    <div id="level-complete-section" style="display: none;">
-        <button class="next-btn" onclick="goToNextLevel()">Next Level</button>
     </div>
 
     <script>
@@ -142,6 +120,20 @@
             language = this.value;
         });
 
+        // Go to specific level
+        function goToLevel(level) {
+            if (level === 1) {
+                document.getElementById("counting-section").style.display = "block"; // Show counting
+                // Add other level sections if necessary
+            } else if (level === 2) {
+                // Show Level 2
+                alert("You are going to Level 2: Quiz");
+            } else if (level === 3) {
+                // Show Level 3
+                alert("You are going to Level 3: Input Mode");
+            }
+        }
+
         // Start counting from 1 to 100
         function startCounting() {
             levelCompleted = false;
@@ -152,9 +144,8 @@
                 } else {
                     clearInterval(countingInterval);
                     levelCompleted = true;
-                    document.getElementById("level-complete-section").style.display = "block"; // Show Next Level Button
-                    document.getElementById("direct-level-section").style.display = "block"; // Show Direct Level Selection
-                    alert("Level 1 Completed! Proceed to Level 2.");
+                    alert("Level 1 Completed!");
+                    // You can show "Next Level" option or auto go to next level
                 }
             }, 2000);  // 2 seconds gap
         }
@@ -164,9 +155,9 @@
             clearInterval(countingInterval);
         }
 
-        // Back button function
+        // Go back to the main interface
         function goBack() {
-            window.location.href = "index.html";
+            window.location.href = "index.html";  // Go to your homepage
         }
 
         // Speak the number based on selected language
@@ -186,6 +177,7 @@
             audio.play();
         }
 
+        // Stop audio function
         function stopAudio() {
             if (audio) {
                 audio.pause();
@@ -210,22 +202,6 @@
                 };
 
                 fileReader.readAsDataURL(file);
-            }
-        }
-
-        // Go to next level
-        function goToNextLevel() {
-            window.location.href = "level2.html"; // Redirect to Level 2 (You can create level2.html)
-        }
-
-        // Direct Level Navigation
-        function goToLevel(level) {
-            if (level === 1) {
-                window.location.href = "level1.html"; // Redirect to Level 1
-            } else if (level === 2) {
-                window.location.href = "level2.html"; // Redirect to Level 2
-            } else if (level === 3) {
-                window.location.href = "level3.html"; // Redirect to Level 3
             }
         }
     </script>
